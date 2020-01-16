@@ -6,18 +6,10 @@ orbs:
 jobs: 
   build: 
     docker: 
-      - image: circleci/ruby:2.5
+      - image: circleci/ruby:2.4
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - updox_{{ checksum "Gemfile.lock" }}
-            - updox
       - run: bundle install --path vendor/bundle --jobs 20 --retry 5
-      - save_cache:
-          key: updox_{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
       - run: |
           bundle exec rake test
       - store_test_results:
