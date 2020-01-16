@@ -1,23 +1,24 @@
-version: 2
-jobs:
-  build:
-    working_directory: ~/weinfuse_api
-    docker:
-      - image: circleci/ruby:2.4
+version: 2.1 
+
+orbs:
+  ruby: circleci/ruby@0.1.2 # Ruby orb registry: https://circleci.com/orbs/registry/orb/circleci/ruby
+
+jobs: 
+  build: 
+    docker: 
+      - image: circleci/ruby:2.5
     steps:
       - checkout
-      - type: restore-cache
-        key: updox_{{ checksum "Gemfile.lock" }}
-        key: updox
+      - restore_cache:
+          keys:
+            - updox_{{ checksum "Gemfile.lock" }}
+            - updox
       - run: bundle install --path vendor/bundle --jobs 20 --retry 5
-      - type: cache-save
-        key: updox_{{ checksum "Gemfile.lock" }}
-        key: updox
-        paths:
-          - vendor/bundle
-      - type: shell
-        command: |
+      - save_cache:
+          key: updox_{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+      - run: |
           bundle exec rake test
-      - type: store_test_results
-        path: /tmp/test-results
-
+      - store_test_results:
+          path: /tmp/test-results
