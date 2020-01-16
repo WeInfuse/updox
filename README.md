@@ -100,10 +100,9 @@ response.meta
 
 ```ruby
 Updox.configure do |c|
-  c.api_key      = ENV['UPDOX_API_KEY']
-  c.secret       = ENV['UPDOX_SECRET']
+  c.application_id       = ENV['UPDOX_APP_ID']
+  c.application_password = ENV['UPDOX_APP_PASS']
   c.api_endpoint = 'http://hello.com' # Defaults to Updox endpoint
-  c.token_expiry_padding = 120 # Defaults to 60 seconds
 end
 ```
 
