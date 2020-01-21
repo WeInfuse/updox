@@ -53,12 +53,12 @@ class Minitest::Test
   end
 
   def stub_updox_request(endpoint)
-    return stub_request(:post, "#{Updox::Connection.base_uri}/#{endpoint}")
+    return stub_request(:post, "#{Updox::Connection.base_uri}#{endpoint}")
   end
 
-  def stub_updox(response: nil)
-    response = build_response(body: {}) if response.nil?
+  def stub_updox(endpoint: '/ping', response: nil)
+    response ||= build_response(body: {})
 
-    @stub = stub_updox_request('ping').to_return(response)
+    @stub = stub_updox_request(endpoint).to_return(response)
   end
 end

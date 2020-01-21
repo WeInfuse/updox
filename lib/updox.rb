@@ -4,6 +4,7 @@ require 'updox/version'
 require 'updox/updox_exception'
 require 'updox/connection'
 require 'updox/models/auth'
+require 'updox/models/practice'
 
 module Updox
   class Configuration
