@@ -8,9 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - None
 
-## 0.1.0 - 2020-01-20
+## 0.1.0 - 2020-01-21
 ### Added
-- Initial Release
+- Initial Release with ability to ping Updox api
 
-[Unreleased]: https://github.com/WeInfuse/redox/compare/v1.0.2...HEAD
-[0.1.1]: https://github.com/WeInfuse/redox/compare/0.1.0...0.1.1
+[Unreleased]: https://github.com/WeInfuse/updox/compare/v0.1.0...HEAD
+[0.1.1]: https://github.com/WeInfuse/updox/compare/v0.1.0...v0.1.1
+[0.1.0]: https://github.com/WeInfuse/updox/compare/v0.1.0
