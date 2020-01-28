@@ -9,6 +9,13 @@ Updox.configuration.application_id = '123'
 Updox.configuration.application_password  = 'abc'
 
 class Minitest::Test
+  def assert_app_auth(request)
+    request_body = JSON.parse(request.body)
+
+    assert_equal(request_body.dig('auth', 'applicationId'), Updox.configuration.application_id)
+    assert_equal(request_body.dig('auth', 'applicationPassword'), Updox.configuration.application_password)
+  end
+
   def load_sample(file, parse: false)
     file = File.join('test', 'samples', file)
     file_contents = nil

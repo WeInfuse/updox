@@ -3,6 +3,7 @@ require 'hashie'
 require 'updox/version'
 require 'updox/updox_exception'
 require 'updox/connection'
+require 'updox/models/model'
 require 'updox/models/auth'
 require 'updox/models/practice'
 

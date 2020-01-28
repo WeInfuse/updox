@@ -2,6 +2,7 @@ module Updox
   module Models
     class Practice < Hashie::Trash
       CREATE_ENDPOINT = '/practiceCreate'.freeze
+      QUERY_ENDPOINT  = '/practiceList'.freeze
 
       include Hashie::Extensions::IndifferentAccess
 
@@ -31,7 +32,11 @@ module Updox
       alias_method :account_id, :accountId
 
       def create
-        UpdoxClient.connection.request(endpoint: CREATE_ENDPOINT, body: self.to_h)
+        UpdoxClient.connection.request(endpoint: CREATE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
+      end
+
+      def self.query
+        UpdoxClient.connection.request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP)
       end
     end
   end

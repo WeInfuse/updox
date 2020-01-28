@@ -34,13 +34,38 @@ class PracticeTest < Minitest::Test
         WebMock.after_request do |request, response|
           @request = request
         end
+
+        practice.create
       end
 
       it 'calls create api' do
-        practice.create
         request_body = JSON.parse(@request.body)
 
         assert_equal(request_body['name'], practice.name)
+      end
+
+      it 'has app auth' do
+        assert_app_auth(@request)
+      end
+    end
+
+    describe 'query' do
+      before do
+        stub_updox(endpoint: Updox::Models::Practice::QUERY_ENDPOINT, response: build_response(body: [1, 2].to_json))
+
+        WebMock.after_request do |request, response|
+          @request = request
+        end
+
+        @response = practice.class.query
+      end
+
+      it 'gets response' do
+        assert_equal(2, @response.parsed_response.size)
+      end
+
+      it 'has app auth' do
+        assert_app_auth(@request)
       end
     end
   end
