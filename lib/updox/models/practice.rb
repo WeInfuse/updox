@@ -7,7 +7,7 @@ module Updox
       include Hashie::Extensions::IndifferentAccess
 
       property :name, required: true
-      property :active, default: false
+      property :active, default: false, transform_with: ->(v) { true == v }
       property :accountId, from: :account_id, with: ->(v) { v.to_s }
       property :address1
       property :address2

@@ -1,5 +1,7 @@
 module Updox
   module Models
+    DATETIME_FORMAT = '%Y-%m-%d %H:%M'.freeze
+
     class Model < Hashie::Trash
       property :item, required: false
       property :items, required: false

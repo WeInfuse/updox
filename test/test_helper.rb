@@ -12,8 +12,16 @@ class Minitest::Test
   def assert_app_auth(request)
     request_body = JSON.parse(request.body)
 
-    assert_equal(request_body.dig('auth', 'applicationId'), Updox.configuration.application_id)
-    assert_equal(request_body.dig('auth', 'applicationPassword'), Updox.configuration.application_password)
+    assert_equal(Updox.configuration.application_id, request_body.dig('auth', 'applicationId'))
+    assert_equal(Updox.configuration.application_password, request_body.dig('auth', 'applicationPassword'))
+  end
+
+  def assert_acct_auth(request, expected_account_id)
+    request_body = JSON.parse(request.body)
+
+    assert_app_auth(request)
+
+    assert_equal(expected_account_id, request_body.dig('auth', 'accountId'))
   end
 
   def load_sample(file, parse: false)
