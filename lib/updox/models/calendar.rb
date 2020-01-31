@@ -1,9 +1,7 @@
 module Updox
   module Models
-    class Calendar < Hashie::Trash
+    class Calendar < Model
       SYNC_ENDPOINT = '/calendarsSync'.freeze
-
-      include Hashie::Extensions::IndifferentAccess
 
       property :id, required: true
       property :title, required: true
@@ -14,7 +12,7 @@ module Updox
       property :reminderTurnOff, default: false, from: :reminder_turn_off, with: ->(v) { true == v}, transform_with: ->(v) { true == v }
 
       def create(account_id: )
-        UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: self.to_h, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+        self.class.from_response(UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: self.to_h, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT))
       end
     end
   end

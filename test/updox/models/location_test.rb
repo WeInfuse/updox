@@ -23,13 +23,23 @@ class LocationTest < Minitest::Test
           @request = request
         end
 
-        loc.class.sync([loc], account_id: account_id)
+        loc.save(account_id: account_id)
       end
 
       it 'calls sync api' do
         request_body = JSON.parse(@request.body)
 
-        assert_equal(request_body['locations'].first, loc.to_h)
+        assert_equal(1, request_body['locations'].size)
+        assert_equal(loc.to_h, request_body['locations'].first)
+      end
+
+      it 'has bulk call' do
+        loc.class.sync([loc, loc], account_id: account_id)
+
+        request_body = JSON.parse(@request.body)
+
+        assert_equal(2, request_body['locations'].size)
+        assert_equal(loc.to_h, request_body['locations'].first)
       end
 
       it 'has acct auth' do

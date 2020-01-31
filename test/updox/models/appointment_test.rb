@@ -23,13 +23,23 @@ class AppointmentTest < Minitest::Test
           @request = request
         end
 
-        appointment.class.sync([appointment], account_id: account_id)
+        appointment.save(account_id: account_id)
       end
 
       it 'calls sync api' do
         request_body = JSON.parse(@request.body)
 
-        assert_equal(request_body['appointments'].first, appointment.to_h)
+        assert_equal(1, request_body['appointments'].size)
+        assert_equal(appointment.to_h, request_body['appointments'].first)
+      end
+
+      it 'has bulk call' do
+        appointment.class.sync([appointment, appointment], account_id: account_id)
+
+        request_body = JSON.parse(@request.body)
+
+        assert_equal(2, request_body['appointments'].size)
+        assert_equal(appointment.to_h, request_body['appointments'].first)
       end
 
       it 'has acct auth' do

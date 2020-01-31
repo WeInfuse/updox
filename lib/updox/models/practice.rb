@@ -1,10 +1,11 @@
 module Updox
   module Models
-    class Practice < Hashie::Trash
+    class Practice < Model
       CREATE_ENDPOINT = '/practiceCreate'.freeze
       QUERY_ENDPOINT  = '/practiceList'.freeze
 
-      include Hashie::Extensions::IndifferentAccess
+      LIST_TYPE = 'practiceList'.freeze
+      LIST_NAME = 'practices'
 
       property :name, required: true
       property :active, default: false, transform_with: ->(v) { true == v }
@@ -36,7 +37,7 @@ module Updox
       end
 
       def self.query
-        UpdoxClient.connection.request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP)
+        from_response(UpdoxClient.connection.request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP), self)
       end
     end
   end

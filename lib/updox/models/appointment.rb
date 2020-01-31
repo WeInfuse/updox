@@ -1,9 +1,7 @@
 module Updox
   module Models
-    class Appointment < Hashie::Trash
+    class Appointment < Model
       SYNC_ENDPOINT  = '/appointmentsSync1_1'.freeze
-
-      include Hashie::Extensions::IndifferentAccess
 
       property :id, required: true
       property :updoxId, from: :updox_id
@@ -27,8 +25,12 @@ module Updox
         result
       end
 
+      def save(account_id: )
+        self.class.sync([self], account_id: account_id)
+      end
+
       def self.sync(appointments, account_id: )
-        UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { appointments: appointments.map(&:to_h) }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+        from_response(UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { appointments: appointments.map(&:to_h) }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT), self)
       end
     end
   end

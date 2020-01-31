@@ -1,0 +1,12 @@
+{
+  "statuses": [
+    {
+      "id": "27",
+      "success": true,
+      "message": null
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}

@@ -1,9 +1,7 @@
 module Updox
   module Models
-    class Location < Hashie::Trash
+    class Location < Model
       SYNC_ENDPOINT  = '/locationsSync'.freeze
-
-      include Hashie::Extensions::IndifferentAccess
 
       property :id
       property :code
@@ -11,8 +9,12 @@ module Updox
       property :showInPortal, default: false, from: :show_in_portal, with: ->(v) { true == v }, transform_with: ->(v) { true == v }
       property :active, default: false, transform_with: ->(v) { true == v }
 
+      def save(account_id: )
+        self.class.sync([self], account_id: account_id)
+      end
+
       def self.sync(locations, account_id: )
-        UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { locations: locations }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+        from_response(UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { locations: locations }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT), self)
       end
     end
   end

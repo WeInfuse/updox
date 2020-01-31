@@ -27,45 +27,51 @@ class PracticeTest < Minitest::Test
       end
     end
 
-    describe 'create' do
+    describe 'api' do
       before do
-        stub_updox(endpoint: Updox::Models::Practice::CREATE_ENDPOINT, response: build_response())
+        stub_updox(endpoint: ep, response: response)
 
         WebMock.after_request do |request, response|
           @request = request
         end
-
-        practice.create
       end
 
-      it 'calls create api' do
-        request_body = JSON.parse(@request.body)
+      describe 'create' do
+        let(:response) { build_response() }
+        let(:ep) { Updox::Models::Practice::CREATE_ENDPOINT }
 
-        assert_equal(request_body['name'], practice.name)
-      end
-
-      it 'has app auth' do
-        assert_app_auth(@request)
-      end
-    end
-
-    describe 'query' do
-      before do
-        stub_updox(endpoint: Updox::Models::Practice::QUERY_ENDPOINT, response: build_response(body: [1, 2].to_json))
-
-        WebMock.after_request do |request, response|
-          @request = request
+        before do
+          practice.create
         end
 
-        @response = practice.class.query
+        it 'calls create api' do
+          request_body = JSON.parse(@request.body)
+
+          assert_equal(request_body['name'], practice.name)
+        end
+
+        it 'has app auth' do
+          assert_app_auth(@request)
+        end
       end
 
-      it 'gets response' do
-        assert_equal(2, @response.parsed_response.size)
-      end
+      describe 'query' do
+        let(:body) { load_sample('practice_list.response.json') }
+        let(:response) { build_response(body: body) }
+        let(:ep) { Updox::Models::Practice::QUERY_ENDPOINT }
 
-      it 'has app auth' do
-        assert_app_auth(@request)
+        before do
+          @response = practice.class.query
+        end
+
+        it 'gets response' do
+          assert_equal(1, @response.items.size)
+          assert_equal('Acccounttown Inc', @response.items.first.name)
+        end
+
+        it 'has app auth' do
+          assert_app_auth(@request)
+        end
       end
     end
   end

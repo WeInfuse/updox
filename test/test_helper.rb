@@ -59,10 +59,11 @@ class Minitest::Test
     if (true == body.is_a?(Hash))
       body = body.to_json
     elsif (false == file.nil?)
-      body = read_test_file(file)
+      body = load_sample(file)
     end
 
     response[:body] = body if (false == body.nil?)
+    response[:body] ||= load_sample('success.response.json') if 200 == response[:status]
 
     return response
   end

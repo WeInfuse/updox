@@ -23,13 +23,23 @@ class PatientTest < Minitest::Test
           @request = request
         end
 
-        patient.class.sync([patient], account_id: account_id)
+        patient.save(account_id: account_id)
       end
 
       it 'calls sync api' do
         request_body = JSON.parse(@request.body)
 
-        assert_equal(request_body['patients'].first, patient.to_h)
+        assert_equal(1, request_body['patients'].size)
+        assert_equal(patient.to_h, request_body['patients'].first)
+      end
+
+      it 'has bulk call' do
+        patient.class.sync([patient, patient], account_id: account_id)
+
+        request_body = JSON.parse(@request.body)
+
+        assert_equal(2, request_body['patients'].size)
+        assert_equal(patient.to_h, request_body['patients'].first)
       end
 
       it 'has acct auth' do
