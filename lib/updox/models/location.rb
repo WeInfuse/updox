@@ -1,7 +1,7 @@
 module Updox
   module Models
     class Location < Model
-      SYNC_ENDPOINT  = '/locationsSync'.freeze
+      SYNC_ENDPOINT  = '/LocationsSync'.freeze
 
       property :id
       property :code

@@ -1,7 +1,7 @@
 module Updox
   module Models
     class Appointment < Model
-      SYNC_ENDPOINT  = '/appointmentsSync1_1'.freeze
+      SYNC_ENDPOINT  = '/AppointmentsSync'.freeze
 
       property :id, required: true
       property :updoxId, from: :updox_id

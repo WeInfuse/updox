@@ -1,7 +1,7 @@
 module Updox
   module Models
     class Calendar < Model
-      SYNC_ENDPOINT = '/calendarsSync'.freeze
+      SYNC_ENDPOINT = '/CalendarsSync'.freeze
 
       property :id, required: true
       property :title, required: true

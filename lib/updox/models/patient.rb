@@ -1,7 +1,7 @@
 module Updox
   module Models
     class Patient < Model
-      SYNC_ENDPOINT  = '/patientsSync'.freeze
+      SYNC_ENDPOINT  = '/PatientsSync'.freeze
 
       property :id
       property :internalId, required: true, from: :internal_id

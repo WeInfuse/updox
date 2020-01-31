@@ -1,8 +1,8 @@
 module Updox
   module Models
     class Practice < Model
-      CREATE_ENDPOINT = '/practiceCreate'.freeze
-      QUERY_ENDPOINT  = '/practiceList'.freeze
+      CREATE_ENDPOINT = '/PracticeCreate'.freeze
+      QUERY_ENDPOINT  = '/PracticeList'.freeze
 
       LIST_TYPE = 'practiceList'.freeze
       LIST_NAME = 'practices'
