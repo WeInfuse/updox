@@ -8,7 +8,6 @@ module Updox
       LIST_NAME = 'practices'
 
       property :name, required: true
-      property :active, default: false, transform_with: ->(v) { true == v }
       property :accountId, from: :account_id, with: ->(v) { v.to_s }
       property :address1
       property :address2
@@ -29,6 +28,7 @@ module Updox
       property :practiceSpecialtyCode, from: :practice_specialty_code
       property :practiceNpi, from: :practice_npi
       property :defaultConsentMethods
+      property :active, default: true
 
       alias_method :account_id, :accountId
 

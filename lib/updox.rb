@@ -5,11 +5,13 @@ require 'updox/updox_exception'
 require 'updox/connection'
 require 'updox/models/model'
 require 'updox/models/auth'
+require 'updox/models/application'
 require 'updox/models/appointment'
 require 'updox/models/calendar'
 require 'updox/models/location'
 require 'updox/models/patient'
 require 'updox/models/practice'
+require 'updox/models/user'
 
 module Updox
   class Configuration

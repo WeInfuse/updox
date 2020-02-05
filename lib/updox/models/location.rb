@@ -7,7 +7,7 @@ module Updox
       property :code
       property :name
       property :showInPortal, default: false, from: :show_in_portal, with: ->(v) { true == v }, transform_with: ->(v) { true == v }
-      property :active, default: false, transform_with: ->(v) { true == v }
+      property :active, default: true
 
       def save(account_id: )
         self.class.sync([self], account_id: account_id)

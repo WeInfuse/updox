@@ -12,7 +12,7 @@ module Updox
       property :homePhone, from: :home_phone
       property :workPhone, from: :work_phone
       property :mobileNumber, from: :mobile_number
-      property :active, default: false, transform_with: ->(v) { true == v }
+      property :active, default: true
 
       def save(account_id: )
         self.class.sync([self], account_id: account_id)

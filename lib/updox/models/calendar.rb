@@ -7,8 +7,8 @@ module Updox
       property :title, required: true
       property :color, required: true, default: '#000000'
       property :textColor, required: true, default: '#FFFFFF'
-      property :active, default: false, transform_with: ->(v) { true == v }
       property :publicCalendar, default: false, from: :public_calendar, with: ->(v) { true == v}, transform_with: ->(v) { true == v }
+      property :active, default: true
       property :reminderTurnOff, default: false, from: :reminder_turn_off, with: ->(v) { true == v}, transform_with: ->(v) { true == v }
 
       def create(account_id: )
