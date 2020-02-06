@@ -52,7 +52,7 @@ class AuthTest < Minitest::Test
         let(:endpoint) { Updox::Models::Auth::PING_ACCT_ENDPOINT }
         let(:auth_method) { :ping_with_account_auth }
 
-        it 'has app authorization' do
+        it 'has account authorization' do
           assert_equal(Updox.configuration.application_id, @request_auth.dig('applicationId'))
           assert_equal(Updox.configuration.application_password, @request_auth.dig('applicationPassword'))
           assert_equal('my_account_id', @request_auth.dig('accountId'))
@@ -64,7 +64,7 @@ class AuthTest < Minitest::Test
         let(:endpoint) { Updox::Models::Auth::PING_FULL_ENDPOINT }
         let(:auth_method) { :ping_with_full_auth }
 
-        it 'has app authorization' do
+        it 'has full authorization' do
           assert_equal(Updox.configuration.application_id, @request_auth.dig('applicationId'))
           assert_equal(Updox.configuration.application_password, @request_auth.dig('applicationPassword'))
           assert_equal('my_account_id', @request_auth.dig('accountId'))

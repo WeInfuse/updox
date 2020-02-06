@@ -26,74 +26,87 @@ Or install it yourself as:
 Make sure you're [configured](#configuration)!
 
 ```ruby
-patient = Updox::Models::Patient.new
-patient.demographics.first_name = 'Joe'
-patient.demographics['LastName'] = 'Joerson'
-patient.add_identifier(type: 'TheType', value: 'x13005')
+auth = Updox::Models::Auth.new
 
-meta = Updox::Models::Meta.new
-meta.set_source(name: 'MySource', id: '123-584')
-meta.add_destination(name: 'TheDest', id: '973-238')
+response = auth.ping # No authentication needed!
+
+response = auth.ping_with_application_auth # Check if you're app auth is working!
 ```
 
-### Create
+### Practice
+The practice is what Updox calls 'Account' access so anywhere the `account_id` is required is relating back to this practice instance.
 
+#### Create
 ```ruby
-response = patient.create(meta: meta)
+practice = Updox::Models::Practice.new(name: 'LOL LTD', account_id: '0001', active: true)
+practice.create
 ```
 
-### Update
-
+#### List
 ```ruby
-response = patient.update(meta: meta)
+practices = Updox::Models::Practice.query.practices
 ```
 
-### Search
+### Location
+
+#### Create
 
 ```ruby
-response = Updox::Models::Patient.query(patient, meta: meta)
+location = Updox::Models::Location.new(active: true, name: 'My Location', code: 'ML01', id: '27')
+location.save(account_id: practice.account_id)
+
+# Bulk
+Location.sync([l0, l1], account_id: practice.account_id)
+```
+
+### Calendar
+
+#### Create
+
+```ruby
+calendar = Updox::Models::Calendar.new(active: true, title: 'My Calendar', id: 'C1')
+calendar.create(account_id: practice.account_id)
+```
+
+### Patient
+
+#### Create
+
+```ruby
+patient = Updox::Models::Patient.new(id: 'X0001', internal_id: 'X0001', first_name: 'Brian', last_name: 'Brianson', mobile_number: 5126914360, active: true)
+patient.save(account_id: practice.account_id)
+
+# Bulk
+Patient.sync([p0, p1, p2], account_id: practice.account_id)
+```
+
+### Appointment
+
+#### Create
+
+```ruby
+appointment = Updox::Models::Appointment.new(id: 'A0001', calendar_id: calendar.id, date: Time.now + 20, duration: 60, location_id: location.id, patient_id: patient.id)
+appointment.save(account_id: practice.account_id)
+
+# Bulk
+Appointment.sync([appt0, appt1, appt2], account_id: practice.account_id)
 ```
 
 ### Response
+By default we return `Updox::Models::Model.from_response`
 
-The response object is a base `Updox::Models::Model` class.
+This class throws if throw an exception on bad responses with a parsed error.
 
-With the HTTParty response object
+If successful it adds helper methods and converts each to the respective class.
+
+The raw response is stored in the resulting model but you can get the raw response by setting config option to false
+
 ```ruby
-response.response
-#<HTTParty::Response:0x7fa354c1fbe8>
-
-response.response.ok?
-true
-```
-
-And any `Model` objects that were returned
-```ruby
-response.patient
-{
-  "Identifiers"=> [
-      {"IDType"=>"MR", "ID"=>"0000000003"},
-      {"ID"=>"e3fedf48-c8bf-4728-845f-cb810001b571", "IDType"=>"EHRID"}
-    ],
-  "Demographics"=> {
-    "Race"=>"Black",
-    "SSN"=>"303-03-0003",
-    "Nickname"=>"Walt"
-...
-  }
-  "PCP"=> {
-    "NPI"=>nil,
-  }
-}
-
-response.meta
-{
-  "EventDateTime"=>"2019-04-26T20:03:00.304866Z",
-  "DataModel"=>"PatientAdmin",
-  ...
-  "Transmission"=>{"ID"=>797225234},
-  "Message"=>{"ID"=>1095117817}
-}
+response = Updox::Models::Practice.query
+response.practices # Has the practices as Updox::Models::Practice model
+response.items # Same as practices, always exists on any model if alias is broken
+response.item  # If there is no array, we populate this object
+response.response # Raw HTTParty response is here
 ```
 
 ### Configuration
@@ -103,6 +116,7 @@ Updox.configure do |c|
   c.application_id       = ENV['UPDOX_APP_ID']
   c.application_password = ENV['UPDOX_APP_PASS']
   c.api_endpoint = 'http://hello.com' # Defaults to Updox endpoint
+  c.parse_responses = false # Defaults to true
 end
 ```
 

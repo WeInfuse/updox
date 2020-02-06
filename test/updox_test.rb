@@ -32,7 +32,8 @@ class UpdoxTest < Minitest::Test
     {
       application_id: 'a',
       application_password: 'b',
-      api_endpoint: 'http://hi.com'
+      api_endpoint: 'http://hi.com',
+      parse_responses: false
     }.each do |method, value|
       it "can set #{method} via configuration" do
         assert(Updox.configuration.respond_to?(method))

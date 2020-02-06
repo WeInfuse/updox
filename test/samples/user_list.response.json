@@ -1,0 +1,30 @@
+{
+  "userList": [
+    {
+      "userId": "weinfuse_user",
+      "accountId": "weinfuse_acct",
+      "loginId": "Larry@practicetown.com",
+      "firstName": "Larry",
+      "middleName": "",
+      "lastName": "Larryton",
+      "address1": "",
+      "address2": "",
+      "city": "",
+      "state": "",
+      "postal": "",
+      "timeZone": "Zulu",
+      "metadata": "",
+      "vetted": false,
+      "active": true,
+      "searchOptOut": false,
+      "npi": "",
+      "providerTaxonomyCode": "",
+      "directAddress": "Larry@weinfuseacctdirectdomain.direct.myupdox.com",
+      "admin": true,
+      "provider": false
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}

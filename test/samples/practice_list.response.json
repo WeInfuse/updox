@@ -1,0 +1,25 @@
+{
+  "practiceList": [
+    {
+      "accountId": "some_acct",
+      "name": "Acccounttown Inc",
+      "address1": "6555 Ronn Ln",
+      "address2": "",
+      "city": "Dublin",
+      "state": "OH",
+      "postal": "43017",
+      "phone": "5555559720",
+      "fax": "",
+      "directAddress": null,
+      "directDomain": "accounttown.direct.myupdox.com",
+      "websiteAddress": "accounttownpatientportal",
+      "metadata": "",
+      "timeZone": "America/New_York",
+      "vetted": false,
+      "active": true
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}

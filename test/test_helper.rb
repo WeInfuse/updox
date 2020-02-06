@@ -9,6 +9,21 @@ Updox.configuration.application_id = '123'
 Updox.configuration.application_password  = 'abc'
 
 class Minitest::Test
+  def assert_app_auth(request)
+    request_body = JSON.parse(request.body)
+
+    assert_equal(Updox.configuration.application_id, request_body.dig('auth', 'applicationId'))
+    assert_equal(Updox.configuration.application_password, request_body.dig('auth', 'applicationPassword'))
+  end
+
+  def assert_acct_auth(request, expected_account_id)
+    request_body = JSON.parse(request.body)
+
+    assert_app_auth(request)
+
+    assert_equal(expected_account_id, request_body.dig('auth', 'accountId'))
+  end
+
   def load_sample(file, parse: false)
     file = File.join('test', 'samples', file)
     file_contents = nil
@@ -44,10 +59,11 @@ class Minitest::Test
     if (true == body.is_a?(Hash))
       body = body.to_json
     elsif (false == file.nil?)
-      body = read_test_file(file)
+      body = load_sample(file)
     end
 
     response[:body] = body if (false == body.nil?)
+    response[:body] ||= load_sample('success.response.json') if 200 == response[:status]
 
     return response
   end
@@ -56,7 +72,7 @@ class Minitest::Test
     return stub_request(:post, "#{Updox::Connection.base_uri}#{endpoint}")
   end
 
-  def stub_updox(endpoint: '/ping', response: nil)
+  def stub_updox(endpoint: Updox::Models::Auth::PING_ENDPOINT, response: nil)
     response ||= build_response(body: {})
 
     @stub = stub_updox_request(endpoint).to_return(response)

@@ -1,12 +1,13 @@
 module Updox
   module Models
-    class Practice < Hashie::Trash
-      CREATE_ENDPOINT = '/practiceCreate'.freeze
+    class Practice < Model
+      CREATE_ENDPOINT = '/PracticeCreate'.freeze
+      QUERY_ENDPOINT  = '/PracticeList'.freeze
 
-      include Hashie::Extensions::IndifferentAccess
+      LIST_TYPE = 'practiceList'.freeze
+      LIST_NAME = 'practices'
 
       property :name, required: true
-      property :active, default: false
       property :accountId, from: :account_id, with: ->(v) { v.to_s }
       property :address1
       property :address2
@@ -27,11 +28,16 @@ module Updox
       property :practiceSpecialtyCode, from: :practice_specialty_code
       property :practiceNpi, from: :practice_npi
       property :defaultConsentMethods
+      property :active, default: true
 
       alias_method :account_id, :accountId
 
       def create
-        UpdoxClient.connection.request(endpoint: CREATE_ENDPOINT, body: self.to_h)
+        UpdoxClient.connection.request(endpoint: CREATE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
+      end
+
+      def self.query
+        from_response(UpdoxClient.connection.request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP), self)
       end
     end
   end

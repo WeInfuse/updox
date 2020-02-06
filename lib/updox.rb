@@ -3,16 +3,26 @@ require 'hashie'
 require 'updox/version'
 require 'updox/updox_exception'
 require 'updox/connection'
+require 'updox/models/model'
 require 'updox/models/auth'
+require 'updox/models/application'
+require 'updox/models/appointment'
+require 'updox/models/calendar'
+require 'updox/models/location'
+require 'updox/models/patient'
 require 'updox/models/practice'
+require 'updox/models/user'
 
 module Updox
   class Configuration
-    attr_accessor :application_id, :application_password
+    attr_accessor :application_id, :application_password, :parse_responses
+
+    alias_method :parse_responses?, :parse_responses
 
     def initialize
       @application_id       = nil
       @application_password = nil
+      @parse_responses      = true
     end
 
     def api_endpoint=(endpoint)
@@ -27,7 +37,8 @@ module Updox
       return {
         application_id: @application_id,
         application_password: @application_password,
-        api_endpoint: api_endpoint
+        api_endpoint: api_endpoint,
+        parse_responses: @parse_responses
       }
     end
 
@@ -35,6 +46,7 @@ module Updox
       self.application_id = h[:application_id]
       self.application_password  = h[:application_password]
       self.api_endpoint = h[:api_endpoint]
+      self.parse_responses = h[:parse_responses]
 
       return self
     end

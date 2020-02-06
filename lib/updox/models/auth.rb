@@ -6,10 +6,10 @@ module Updox
       AUTH_ACCT = AUTH_APP + [:accountId]
       AUTH_FULL = AUTH_ACCT + [:userId]
 
-      PING_ENDPOINT = '/ping'
-      PING_APP_ENDPOINT = '/pingWithApplicationAuth'
-      PING_ACCT_ENDPOINT = '/pingWithAccountAuth'
-      PING_FULL_ENDPOINT = '/pingWithAuth'
+      PING_ENDPOINT = '/Ping'
+      PING_APP_ENDPOINT = PING_ENDPOINT + 'WithApplicationAuth'
+      PING_ACCT_ENDPOINT = PING_ENDPOINT + 'WithAccountAuth'
+      PING_FULL_ENDPOINT = PING_ENDPOINT + 'WithAuth'
 
       property :applicationId, from: :application_id
       property :applicationPassword, from: :application_password
