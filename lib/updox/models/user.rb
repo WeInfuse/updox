@@ -26,6 +26,7 @@ module Updox
       alias_method :user_id, :userId
       alias_method :first_name, :firstName
       alias_method :last_name, :lastName
+      alias_method :login_password, :loginPassword
 
       def create
         UpdoxClient.connection.request(endpoint: SAVE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)

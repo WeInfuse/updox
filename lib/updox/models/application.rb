@@ -3,9 +3,11 @@ module Updox
     class Application < Model
       OPEN_ENDPOINT = '/ApplicationOpen'.freeze
 
-      property :ipAddress
+      property :ipAddress, from: :ip_address
       property :timeout
       property :metadata
+
+      alias_method :ip_address, :ipAddress
 
       def url(account_id: , user_id: , base_uri: nil)
         response = self.open(account_id: account_id, user_id: user_id)

@@ -16,6 +16,11 @@ module Updox
       property :accountId, from: :account_id
       property :userId, from: :user_id
 
+      alias_method :application_id, :applicationId
+      alias_method :application_password, :applicationPassword
+      alias_method :account_id, :accountId
+      alias_method :user_id, :userId
+
       def to_h
         { auth: super.to_h }
       end

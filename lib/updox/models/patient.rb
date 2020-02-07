@@ -14,6 +14,17 @@ module Updox
       property :mobileNumber, from: :mobile_number
       property :active, default: true
 
+      alias_method :email, :emailAddress
+      alias_method :email_address, :emailAddress
+      alias_method :internal_id, :internalId
+      alias_method :first_name, :firstName
+      alias_method :middle_name, :middleName
+      alias_method :last_name, :lastName
+      alias_method :home_phone, :homePhone
+      alias_method :work_phone, :workPhone
+      alias_method :mobile_number, :mobileNumber
+      alias_method :mobile_phone, :mobileNumber
+
       def save(account_id: )
         self.class.sync([self], account_id: account_id)
       end
