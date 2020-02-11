@@ -8,7 +8,7 @@ class UpdoxTest < Minitest::Test
       }
   }.freeze
 
-  describe 'redox' do
+  describe 'updox' do
     it 'has a version' do
       assert(::Updox::VERSION)
     end
