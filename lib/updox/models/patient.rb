@@ -31,6 +31,10 @@ module Updox
         self.class.sync([self], account_id: account_id)
       end
 
+      def self.exists?(patient_id, account_id: )
+        request(endpoint: MESSAGE_COUNT_ENDPOINT, body: { patientId: patient_id }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT).successful?
+      end
+
       def self.sync(patients, account_id: )
         request(endpoint: SYNC_ENDPOINT, body: { patients: patients }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end

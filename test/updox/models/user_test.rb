@@ -45,13 +45,11 @@ class UserTest < Minitest::Test
         end
 
         it 'calls create api' do
-          request_body = JSON.parse(@request.body)
-
           assert_equal(request_body['firstName'], user.first_name)
         end
 
         it 'has app auth' do
-          assert_app_auth(@request)
+          assert_app_auth()
         end
       end
 
@@ -70,7 +68,7 @@ class UserTest < Minitest::Test
         end
 
         it 'has app auth' do
-          assert_app_auth(@request)
+          assert_app_auth()
         end
       end
 
@@ -88,7 +86,7 @@ class UserTest < Minitest::Test
         end
 
         it 'has app auth' do
-          assert_acct_auth(@request, 'my_account_id')
+          assert_acct_auth('my_account_id')
         end
       end
     end

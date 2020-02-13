@@ -9,17 +9,20 @@ Updox.configuration.application_id = '123'
 Updox.configuration.application_password  = 'abc'
 
 class Minitest::Test
-  def assert_app_auth(request)
-    request_body = JSON.parse(request.body)
+  def request_body(request = @request)
+    JSON.parse(request.body)
+  end
 
+  def assert_app_auth(request: nil)
+    @request ||= request
     assert_equal(Updox.configuration.application_id, request_body.dig('auth', 'applicationId'))
     assert_equal(Updox.configuration.application_password, request_body.dig('auth', 'applicationPassword'))
   end
 
-  def assert_acct_auth(request, expected_account_id)
-    request_body = JSON.parse(request.body)
+  def assert_acct_auth(expected_account_id, request: nil)
+    @request ||= request
 
-    assert_app_auth(request)
+    assert_app_auth()
 
     assert_equal(expected_account_id, request_body.dig('auth', 'accountId'))
   end

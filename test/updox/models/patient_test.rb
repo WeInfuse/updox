@@ -15,35 +15,38 @@ class PatientTest < Minitest::Test
       end
     end
 
-    describe 'sync' do
+    describe 'api' do
       before do
-        stub_updox(endpoint: Updox::Models::Patient::SYNC_ENDPOINT)
+        stub_updox(endpoint: ep, response: response)
 
         WebMock.after_request do |request, response|
           @request = request
         end
-
-        patient.save(account_id: account_id)
       end
 
-      it 'calls sync api' do
-        request_body = JSON.parse(@request.body)
+      describe 'sync' do
+        let(:response) { nil }
+        let(:ep) { Updox::Models::Patient::SYNC_ENDPOINT }
 
-        assert_equal(1, request_body['patients'].size)
-        assert_equal(patient.to_h, request_body['patients'].first)
-      end
+        before do
+          patient.save(account_id: account_id)
+        end
 
-      it 'has bulk call' do
-        patient.class.sync([patient, patient], account_id: account_id)
+        it 'calls sync api' do
+          assert_equal(1, request_body['patients'].size)
+          assert_equal(patient.to_h, request_body['patients'].first)
+        end
 
-        request_body = JSON.parse(@request.body)
+        it 'has bulk call' do
+          patient.class.sync([patient, patient], account_id: account_id)
 
-        assert_equal(2, request_body['patients'].size)
-        assert_equal(patient.to_h, request_body['patients'].first)
-      end
+          assert_equal(2, request_body['patients'].size)
+          assert_equal(patient.to_h, request_body['patients'].first)
+        end
 
-      it 'has acct auth' do
-        assert_acct_auth(@request, account_id)
+        it 'has acct auth' do
+          assert_acct_auth(account_id)
+        end
       end
     end
   end

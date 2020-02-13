@@ -46,13 +46,11 @@ class PracticeTest < Minitest::Test
         end
 
         it 'calls create api' do
-          request_body = JSON.parse(@request.body)
-
           assert_equal(request_body['name'], practice.name)
         end
 
         it 'has app auth' do
-          assert_app_auth(@request)
+          assert_app_auth()
         end
       end
 
@@ -71,7 +69,7 @@ class PracticeTest < Minitest::Test
         end
 
         it 'has app auth' do
-          assert_app_auth(@request)
+          assert_app_auth()
         end
       end
 
@@ -90,7 +88,7 @@ class PracticeTest < Minitest::Test
         end
 
         it 'has app auth' do
-          assert_app_auth(@request)
+          assert_app_auth()
         end
       end
     end

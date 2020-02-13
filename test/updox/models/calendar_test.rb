@@ -34,13 +34,11 @@ class CalendarTest < Minitest::Test
         end
 
         it 'calls create api' do
-          request_body = JSON.parse(@request.body)
-
           assert_equal(request_body['title'], calendar.title)
         end
 
         it 'has acct auth' do
-          assert_acct_auth(@request, account_id)
+          assert_acct_auth(account_id)
         end
       end
 
@@ -99,7 +97,7 @@ class CalendarTest < Minitest::Test
         end
 
         it 'has acct auth' do
-          assert_acct_auth(@request, account_id)
+          assert_acct_auth(account_id)
         end
       end
     end
