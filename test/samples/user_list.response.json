@@ -1,8 +1,8 @@
 {
   "userList": [
     {
-      "userId": "weinfuse_user",
-      "accountId": "weinfuse_acct",
+      "userId": "my_user_id",
+      "accountId": "my_user_acct",
       "loginId": "Larry@practicetown.com",
       "firstName": "Larry",
       "middleName": "",

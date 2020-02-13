@@ -73,6 +73,24 @@ class UserTest < Minitest::Test
           assert_app_auth(@request)
         end
       end
+
+      describe 'find' do
+        let(:body) { load_sample('user_find.response.json') }
+        let(:response) { build_response(body: body) }
+        let(:ep) { Updox::Models::User::FIND_ENDPOINT }
+
+        before do
+          @response = user.class.find('my_user_id', account_id: 'my_account_id')
+        end
+
+        it 'gets response' do
+          assert_equal('Larry', @response.user.first_name)
+        end
+
+        it 'has app auth' do
+          assert_acct_auth(@request, 'my_account_id')
+        end
+      end
     end
   end
 end

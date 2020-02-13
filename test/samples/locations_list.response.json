@@ -1,0 +1,85 @@
+{
+  "locations": [
+    {
+      "id": 2,
+      "pid": 22,
+      "code": "def",
+      "name": "Default Location",
+      "externalId": null,
+      "address1": "6555 Wrong St",
+      "address2": "",
+      "city": "Dublin",
+      "state": "OH",
+      "zip": "43017",
+      "country": null,
+      "dayphone": "5558888888",
+      "evephone": null,
+      "faxphone": "",
+      "apptphone": null,
+      "emailAddress": null,
+      "about": null,
+      "hours": "[{\"is_open\":false,\"id\":0,\"close\":1020,\"open\":540},{\"is_open\":false,\"id\":1,\"close\":1020,\"open\":540},{\"is_open\":false,\"id\":2,\"close\":1020,\"open\":540},{\"is_open\":false,\"id\":3,\"close\":1020,\"open\":540},{\"is_open\":false,\"id\":4,\"close\":1020,\"open\":540},{\"is_open\":false,\"id\":5,\"close\":1020,\"open\":540},{\"is_open\":false,\"id\":6,\"close\":1020,\"open\":540}]",
+      "showHide": "{\"aboutUs\":false,\"emailAddress\":false,\"hours\":false,\"address\":true,\"phoneNumber\":false,\"faxNumber\":false}",
+      "showInPortal": true,
+      "active": true,
+      "sortOrder": 10,
+      "url": null,
+      "reminderTurnOff": false,
+      "idString": "3b35",
+      "argsForUniqueRecordSearch": [
+        22,
+        "def",
+        null
+      ],
+      "sqlForUniqueRecordSearch": "pid = ? AND code = ? AND external_id = ?",
+      "classType": "com.updox.objects.PracticeLocation",
+      "logSelfDescription": "syncable type(class com.updox.objects.PracticeLocation), pid(64911), key(null)",
+      "externalUniqueIdentifiers": {
+        "code": "def",
+        "external_id": null
+      }
+    },
+    {
+      "id": 1,
+      "pid": 11,
+      "code": "01",
+      "name": "Bobtown Pharmacy",
+      "externalId": "27",
+      "address1": "2200 Northland Rd, Austin, TX 78731",
+      "address2": null,
+      "city": null,
+      "state": null,
+      "zip": null,
+      "country": null,
+      "dayphone": null,
+      "evephone": null,
+      "faxphone": null,
+      "apptphone": "5553334444",
+      "emailAddress": null,
+      "about": null,
+      "hours": "[{\"id\":0,\"is_open\":false,\"open\":540,\"close\":1020},{\"id\":1,\"is_open\":false,\"open\":540,\"close\":1020},{\"id\":2,\"is_open\":false,\"open\":540,\"close\":1020},{\"id\":3,\"is_open\":false,\"open\":540,\"close\":1020},{\"id\":4,\"is_open\":false,\"open\":540,\"close\":1020},{\"id\":5,\"is_open\":false,\"open\":540,\"close\":1020},{\"id\":6,\"is_open\":false,\"open\":540,\"close\":1020}]",
+      "showHide": "{\"aboutUs\":false,\"faxNumber\":false,\"phoneNumber\":false,\"address\":false,\"hours\":false,\"emailAddress\":false}",
+      "showInPortal": false,
+      "active": true,
+      "sortOrder": 0,
+      "url": null,
+      "reminderTurnOff": false,
+      "idString": "ffff",
+      "argsForUniqueRecordSearch": [
+        11,
+        "01",
+        "27"
+      ],
+      "sqlForUniqueRecordSearch": "pid = ? AND code = ? AND external_id = ?",
+      "classType": "com.updox.objects.PracticeLocation",
+      "logSelfDescription": "syncable type(class com.updox.objects.PracticeLocation), pid(64911), key(27)",
+      "externalUniqueIdentifiers": {
+        "code": "01",
+        "external_id": "27"
+      }
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}
