@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [0.6.0] - [UNRELEASED]
+### Added
+- Calendar#query
+- Calendar#find
+- Calendar#exists?
+- Models now have `error_message` class that returns string with code and message
+
+### Changed
+- All models now return and instance of `Model` for consistency
 
 ## [0.5.0] - 2020-02-13
 ### Added

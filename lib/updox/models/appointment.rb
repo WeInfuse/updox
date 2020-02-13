@@ -37,7 +37,7 @@ module Updox
       end
 
       def self.sync(appointments, account_id: )
-        from_response(UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { appointments: appointments.map(&:to_h) }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT), self)
+        request(endpoint: SYNC_ENDPOINT, body: { appointments: appointments.map(&:to_h) }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
     end
   end

@@ -37,7 +37,7 @@ class UserTest < Minitest::Test
       end
 
       describe 'create' do
-        let(:response) { build_response() }
+        let(:response) { nil }
         let(:ep) { Updox::Models::User::SAVE_ENDPOINT }
 
         before do

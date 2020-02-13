@@ -4,6 +4,7 @@ class LocationTest < Minitest::Test
   describe 'location' do
     let(:loc) { Updox::Models::Location.new }
     let(:account_id) { 'account_0001' }
+    let(:lid) { 27 }
 
     describe 'object' do
       describe 'serializes' do
@@ -19,13 +20,13 @@ class LocationTest < Minitest::Test
       before do
         stub_updox(endpoint: ep, response: response)
 
-        WebMock.after_request do |request, response|
+        WebMock.after_request do |request|
           @request = request
         end
       end
 
       describe 'sync' do
-        let(:response) { build_response() }
+        let(:response) { nil }
         let(:ep) { Updox::Models::Location::SYNC_ENDPOINT }
 
         before do
@@ -69,7 +70,7 @@ class LocationTest < Minitest::Test
 
         describe '#find' do
           it 'can find a single one' do
-            assert_equal('Bobtown Pharmacy', loc.class.find(27, account_id: account_id).name)
+            assert_equal('Bobtown Pharmacy', loc.class.find(lid, account_id: account_id).name)
           end
 
           it 'returns nil if none found' do
@@ -78,18 +79,18 @@ class LocationTest < Minitest::Test
 
           it 'can use cache' do
             assert_requested(@stub, times: 1)
-            n.times { loc.class.find(27, account_id: account_id, cached_query: @query_response) }
+            n.times { loc.class.find(lid, account_id: account_id, cached_query: @query_response) }
             assert_requested(@stub, times: 1)
           end
 
           it 'cache returns same result' do
-            assert_equal(loc.class.find(27, account_id: account_id), loc.class.find(27, account_id: account_id, cached_query: @query_response))
+            assert_equal(loc.class.find(lid, account_id: account_id), loc.class.find(lid, account_id: account_id, cached_query: @query_response))
           end
         end
 
         describe '#exists?' do
           it 'true if found' do
-            assert(loc.class.exists?(27, account_id: account_id))
+            assert(loc.class.exists?(lid, account_id: account_id))
           end
 
           it 'false if none found' do
@@ -98,12 +99,12 @@ class LocationTest < Minitest::Test
 
           it 'can use cache' do
             assert_requested(@stub, times: 1)
-            n.times { loc.class.exists?(27, account_id: account_id, cached_query: @query_response) }
+            n.times { loc.class.exists?(lid, account_id: account_id, cached_query: @query_response) }
             assert_requested(@stub, times: 1)
           end
 
           it 'cache returns same result' do
-            assert_equal(loc.class.exists?(27, account_id: account_id), loc.class.exists?(27, account_id: account_id, cached_query: @query_response))
+            assert_equal(loc.class.exists?(lid, account_id: account_id), loc.class.exists?(lid, account_id: account_id, cached_query: @query_response))
           end
         end
 

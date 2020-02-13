@@ -48,11 +48,11 @@ module Updox
       end
 
       def self.query(account_id: , active_only: false)
-        from_response(UpdoxClient.connection.request(endpoint: LIST_ENDPOINT, body: { activeOnly: active_only }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT))
+        request(endpoint: LIST_ENDPOINT, body: { activeOnly: active_only }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
 
       def self.sync(locations, account_id: )
-        from_response(UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { locations: locations }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT))
+        request(endpoint: SYNC_ENDPOINT, body: { locations: locations }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
     end
   end

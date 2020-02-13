@@ -17,7 +17,7 @@ class PatientTest < Minitest::Test
 
     describe 'sync' do
       before do
-        stub_updox(endpoint: Updox::Models::Patient::SYNC_ENDPOINT, response: build_response())
+        stub_updox(endpoint: Updox::Models::Patient::SYNC_ENDPOINT)
 
         WebMock.after_request do |request, response|
           @request = request

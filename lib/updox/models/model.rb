@@ -2,6 +2,8 @@ module Updox
   module Models
     DATETIME_FORMAT = '%Y-%m-%d %H:%M'.freeze
 
+    #BATCH_SIZE = 200
+
     class Model < Hashie::Trash
       include Hashie::Extensions::IgnoreUndeclared
       include Hashie::Extensions::IndifferentAccess
@@ -24,6 +26,14 @@ module Updox
 
       def response_message
         self[:updox_status].dig('responseMessage')
+      end
+
+      def error_message
+        "#{response_code}: #{response_message}"
+      end
+
+      def self.request(**kwargs)
+        from_response(UpdoxClient.connection.request(kwargs))
       end
 
       def self.from_response(response, klazz = self)

@@ -16,7 +16,7 @@ class AuthTest < Minitest::Test
 
     describe 'endpoints' do
       before do
-        stub_updox(endpoint: endpoint, response: build_response())
+        stub_updox(endpoint: endpoint)
         auth.userId    = uid
         auth.accountId = aid
 
