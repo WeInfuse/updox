@@ -5,6 +5,8 @@ class ConnectionTest < Minitest::Test
     let(:auth) { Updox::Models::Auth.new }
     let(:connection) { Updox::Connection.new }
     let(:auth_data) { -> { JSON.parse(@request.body).dig('auth') } }
+    let(:uid) { 'my_user_id' }
+    let(:aid) { 'my_account_id' }
 
     before do
       stub_updox
@@ -48,7 +50,7 @@ class ConnectionTest < Minitest::Test
 
           assert_requested(@stub, times: 1)
 
-          assert(false == auth_data.call.empty?)
+          assert_equal(false, auth_data.call.empty?)
 
           assert_equal(Updox.configuration.application_id, auth_data.call.dig('applicationId'))
           assert_equal(Updox.configuration.application_password, auth_data.call.dig('applicationPassword'))
@@ -56,19 +58,81 @@ class ConnectionTest < Minitest::Test
           assert_nil(auth_data.call.dig('userId'))
         end
 
-        it 'leaves application auth if included' do
+        it 'does not override app auth if explicitly given' do
           auth.applicationId = 'blahblah'
 
           connection.request(auth: auth, required_auths: Updox::Models::Auth::AUTH_APP)
 
           assert_requested(@stub, times: 1)
 
-          assert(false == auth_data.call.empty?)
+          assert_equal(false, auth_data.call.empty?)
 
           assert_equal('blahblah', auth_data.call.dig('applicationId'))
           assert_equal(Updox.configuration.application_password, auth_data.call.dig('applicationPassword'))
           assert_nil(auth_data.call.dig('accountId'))
           assert_nil(auth_data.call.dig('userId'))
+        end
+
+        describe 'account auth' do
+          it 'can add account auth' do
+            auth.accountId = aid
+            auth.userId    = uid
+
+            connection.request(auth: auth, required_auths: Updox::Models::Auth::AUTH_ACCT)
+
+            assert_requested(@stub, times: 1)
+
+            assert_equal(false, auth_data.call.empty?)
+
+            assert_equal(Updox.configuration.application_id, auth_data.call.dig('applicationId'))
+            assert_equal(Updox.configuration.application_password, auth_data.call.dig('applicationPassword'))
+            assert_equal(aid, auth_data.call.dig('accountId'))
+            assert_nil(auth_data.call.dig('userId'))
+          end
+
+          it 'can add via kwarg' do
+            connection.request(account_id: aid, user_id: uid, required_auths: Updox::Models::Auth::AUTH_ACCT)
+
+            assert_requested(@stub, times: 1)
+
+            assert_equal(false, auth_data.call.empty?)
+
+            assert_equal(Updox.configuration.application_id, auth_data.call.dig('applicationId'))
+            assert_equal(Updox.configuration.application_password, auth_data.call.dig('applicationPassword'))
+            assert_equal(aid, auth_data.call.dig('accountId'))
+            assert_nil(auth_data.call.dig('userId'))
+          end
+        end
+
+        describe 'user auth' do
+          it 'can add user auth' do
+            auth.accountId = aid
+            auth.userId    = uid
+
+            connection.request(auth: auth, required_auths: Updox::Models::Auth::AUTH_FULL)
+
+            assert_requested(@stub, times: 1)
+
+            assert_equal(false, auth_data.call.empty?)
+
+            assert_equal(Updox.configuration.application_id, auth_data.call.dig('applicationId'))
+            assert_equal(Updox.configuration.application_password, auth_data.call.dig('applicationPassword'))
+            assert_equal(aid, auth_data.call.dig('accountId'))
+            assert_equal(uid, auth_data.call.dig('userId'))
+          end
+
+          it 'can add via kwarg' do
+            connection.request(account_id: aid, user_id: uid, required_auths: Updox::Models::Auth::AUTH_FULL)
+
+            assert_requested(@stub, times: 1)
+
+            assert_equal(false, auth_data.call.empty?)
+
+            assert_equal(Updox.configuration.application_id, auth_data.call.dig('applicationId'))
+            assert_equal(Updox.configuration.application_password, auth_data.call.dig('applicationPassword'))
+            assert_equal(aid, auth_data.call.dig('accountId'))
+            assert_equal(uid, auth_data.call.dig('userId'))
+          end
         end
       end
     end

@@ -3,6 +3,8 @@ require 'test_helper'
 class AuthTest < Minitest::Test
   describe 'auth' do
     let(:auth) { Updox::Models::Auth.new }
+    let(:uid) { 'my_user_id' }
+    let(:aid) { 'my_account_id' }
 
     describe 'object' do
       describe '#to_h' do
@@ -15,8 +17,8 @@ class AuthTest < Minitest::Test
     describe 'endpoints' do
       before do
         stub_updox(endpoint: endpoint, response: build_response())
-        auth.userId = 'my_user_id'
-        auth.accountId = 'my_account_id'
+        auth.userId    = uid
+        auth.accountId = aid
 
         WebMock.after_request do |request, response|
           @request = request
@@ -55,7 +57,7 @@ class AuthTest < Minitest::Test
         it 'has account authorization' do
           assert_equal(Updox.configuration.application_id, @request_auth.dig('applicationId'))
           assert_equal(Updox.configuration.application_password, @request_auth.dig('applicationPassword'))
-          assert_equal('my_account_id', @request_auth.dig('accountId'))
+          assert_equal(aid, @request_auth.dig('accountId'))
           assert_nil(@request_auth.dig('userId'))
         end
       end
@@ -67,8 +69,8 @@ class AuthTest < Minitest::Test
         it 'has full authorization' do
           assert_equal(Updox.configuration.application_id, @request_auth.dig('applicationId'))
           assert_equal(Updox.configuration.application_password, @request_auth.dig('applicationPassword'))
-          assert_equal('my_account_id', @request_auth.dig('accountId'))
-          assert_equal('my_user_id', @request_auth.dig('userId'))
+          assert_equal(aid, @request_auth.dig('accountId'))
+          assert_equal(uid, @request_auth.dig('userId'))
         end
       end
     end

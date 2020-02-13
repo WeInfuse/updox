@@ -8,9 +8,23 @@ module Updox
 
       LIST_TYPE = 'undefined'
       LIST_NAME = 'models'
+      ITEM_TYPE = 'model'
 
       property :item, required: false
       property :items, required: false
+      property :updox_status, default: {}
+
+      def successful?
+        self[:updox_status].dig('successful')
+      end
+
+      def response_code
+        self[:updox_status].dig('responseCode')
+      end
+
+      def response_message
+        self[:updox_status].dig('responseMessage')
+      end
 
       def self.from_response(response, klazz = self)
         return response if false == Updox.configuration.parse_responses?
@@ -26,10 +40,15 @@ module Updox
           elsif data&.include?(klazz.const_get(:LIST_TYPE))
             model.items = data.dig(klazz.const_get(:LIST_TYPE)).map { |obj| klazz.new(obj) }
             model.define_singleton_method(klazz.const_get(:LIST_NAME)) { self.items }
+          elsif data&.include?(klazz.const_get(:ITEM_TYPE))
+            model.item = klazz.new(data.dig(klazz.const_get(:ITEM_TYPE)))
+            model.define_singleton_method(klazz.const_get(:ITEM_TYPE)) { self.item }
           else
             model.items = [data]
             model.item  = data
           end
+
+          model.updox_status = data&.select {|k,v| ['successful', 'responseMessage', 'responseCode'].include?(k)} || {}
         else
           raise UpdoxException.from_response(response)
         end

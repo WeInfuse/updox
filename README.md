@@ -47,6 +47,12 @@ practice.create
 practices = Updox::Models::Practice.query.practices
 ```
 
+#### Find
+```ruby
+practice = Updox::Models::Practice.find('0001')
+```
+
+
 ### Location
 
 #### Create
@@ -57,6 +63,37 @@ location.save(account_id: practice.account_id)
 
 # Bulk
 Location.sync([l0, l1], account_id: practice.account_id)
+```
+
+#### Query
+```ruby
+locations = Updox::Models::Location.query(account_id: '0001')
+```
+
+#### Find
+There is no `find` in the api, we are doing a ruby `find` on the query - so use the `cached_query` option if you are doing a bunch of lookups
+
+```ruby
+location = Updox::Models::Location.find(27, account_id: '0001')
+
+cached_query_results = Updox::Models::Location.query(account_id: '0001')
+
+10.times do |id|
+  Updox::Models::Location.find(id, account_id: '0001', cached_query: cached_query_results)
+end
+```
+
+#### Exists?
+See note on #find method about caching
+
+```ruby
+Updox::Models::Location.exists?(27, account_id: '0001')
+
+cached_query_results = Updox::Models::Location.query(account_id: '0001')
+
+10.times do |id|
+  Updox::Models::Location.exists?(id, account_id: '0001', cached_query: cached_query_results)
+end
 ```
 
 ### Calendar
@@ -93,11 +130,13 @@ Appointment.sync([appt0, appt1, appt2], account_id: practice.account_id)
 ```
 
 ### Response
-By default we return `Updox::Models::Model.from_response`
+By default we usually return `Updox::Models::Model.from_response`
 
-This class throws if throw an exception on bad responses with a parsed error.
+This class throws if throw an exception on non 200 responses with a parsed error.
 
-If successful it adds helper methods and converts each to the respective class.
+Updox usually returns a `200` with error information even on things like `Unauthorized`. So you may have to check the updox status via `successful?` method.
+
+If HTTP 200 it adds helper methods and converts each to the respective class.
 
 The raw response is stored in the resulting model but you can get the raw response by setting config option to false
 
@@ -106,6 +145,11 @@ response = Updox::Models::Practice.query
 response.practices # Has the practices as Updox::Models::Practice model
 response.items # Same as practices, always exists on any model if alias is broken
 response.item  # If there is no array, we populate this object
+
+resposne.successful? # Indicates Updox successful indication
+resposne.response_code? # Indicates Updox response code
+resposne.response_message? # Indicates Updox response message
+
 response.response # Raw HTTParty response is here
 ```
 

@@ -8,8 +8,11 @@ module Updox
 
     format :json
 
-    def request(endpoint: Updox::Models::Auth::PING_ENDPOINT, body: {}, headers: {}, auth: Updox::Models::Auth.new, required_auths: [])
+    def request(endpoint: Updox::Models::Auth::PING_ENDPOINT, body: {}, headers: {}, auth: Updox::Models::Auth.new, required_auths: [], account_id: nil, user_id: nil)
       if body.is_a?(Hash)
+        auth[:accountId] = account_id unless account_id.nil?
+        auth[:userId]    = user_id unless user_id.nil?
+
         body = auth_data(auth, required_auths).merge(body)
         body = body.to_json
       end

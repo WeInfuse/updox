@@ -3,6 +3,7 @@ require 'test_helper'
 class PracticeTest < Minitest::Test
   describe 'practice' do
     let(:practice) { Updox::Models::Practice.new(name: 'Catcity LLC') }
+    let(:account_id) { 12345 }
 
     describe 'object' do
       describe '#name' do
@@ -21,9 +22,9 @@ class PracticeTest < Minitest::Test
       end
 
       it 'allows other methods' do
-        practice.account_id = 12345
+        practice.account_id = account_id
 
-        assert_equal('12345', practice.account_id)
+        assert_equal(account_id.to_s, practice.account_id)
       end
     end
 
@@ -67,6 +68,25 @@ class PracticeTest < Minitest::Test
         it 'gets response' do
           assert_equal(1, @response.items.size)
           assert_equal('Acccounttown Inc', @response.items.first.name)
+        end
+
+        it 'has app auth' do
+          assert_app_auth(@request)
+        end
+      end
+
+      describe 'find' do
+        let(:body) { load_sample('practice_find.response.json') }
+        let(:response) { build_response(body: body) }
+        let(:ep) { Updox::Models::Practice::FIND_ENDPOINT }
+
+        before do
+          @response = practice.class.find(account_id)
+        end
+
+        it 'gets response' do
+          assert_equal('Acccounttown Inc', @response.item.name)
+          assert_equal(@response.item.name, @response.practice.name)
         end
 
         it 'has app auth' do

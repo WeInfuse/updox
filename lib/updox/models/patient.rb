@@ -8,10 +8,12 @@ module Updox
       property :firstName, from: :first_name
       property :middleName, from: :middle_name
       property :lastName, from: :last_name
+      property :emailAddress, from: :email
       property :emailAddress, from: :email_address
       property :homePhone, from: :home_phone
       property :workPhone, from: :work_phone
       property :mobileNumber, from: :mobile_number
+      property :mobileNumber, from: :mobile_phone
       property :active, default: true
 
       alias_method :email, :emailAddress
