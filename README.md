@@ -52,7 +52,6 @@ practices = Updox::Models::Practice.query.practices
 practice = Updox::Models::Practice.find('0001')
 ```
 
-
 ### Location
 
 #### Create
@@ -84,7 +83,7 @@ end
 ```
 
 #### Exists?
-See note on #find method about caching
+See note on [Location#find](#location_find) method about caching
 
 ```ruby
 Updox::Models::Location.exists?(27, account_id: '0001')
@@ -97,6 +96,7 @@ end
 ```
 
 ### Calendar
+See [Location](#location) for simliar #query, #find and #exists? methods
 
 #### Create
 

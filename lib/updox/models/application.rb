@@ -18,7 +18,7 @@ module Updox
       end
 
       def open(account_id: , user_id: )
-        Model.from_response(UpdoxClient.connection.request(endpoint: OPEN_ENDPOINT, auth: {accountId: account_id, userId: user_id}, required_auths: Updox::Models::Auth::AUTH_FULL))
+        self.class.request(endpoint: OPEN_ENDPOINT, auth: {accountId: account_id, userId: user_id}, required_auths: Updox::Models::Auth::AUTH_FULL)
       end
     end
   end

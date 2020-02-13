@@ -36,7 +36,7 @@ module Updox
       alias_method :zip, :postal
 
       def create
-        UpdoxClient.connection.request(endpoint: CREATE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
+        self.class.request(endpoint: CREATE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
       end
 
       def self.exists?(account_id)
@@ -44,11 +44,11 @@ module Updox
       end
 
       def self.find(account_id)
-        from_response(UpdoxClient.connection.request(endpoint: FIND_ENDPOINT, body: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_APP))
+        request(endpoint: FIND_ENDPOINT, body: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_APP)
       end
 
       def self.query
-        from_response(UpdoxClient.connection.request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP))
+        request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP)
       end
     end
   end

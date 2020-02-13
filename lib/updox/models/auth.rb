@@ -26,19 +26,19 @@ module Updox
       end
 
       def ping
-        UpdoxClient.connection.request(endpoint: PING_ENDPOINT, auth: self)
+        Model.request(endpoint: PING_ENDPOINT, auth: self)
       end
 
       def ping_with_application_auth
-        UpdoxClient.connection.request(endpoint: PING_APP_ENDPOINT, auth: self, required_auths: AUTH_APP)
+        Model.request(endpoint: PING_APP_ENDPOINT, auth: self, required_auths: AUTH_APP)
       end
 
       def ping_with_account_auth
-        UpdoxClient.connection.request(endpoint: PING_ACCT_ENDPOINT, auth: self, required_auths: AUTH_ACCT)
+        Model.request(endpoint: PING_ACCT_ENDPOINT, auth: self, required_auths: AUTH_ACCT)
       end
 
       def ping_with_full_auth
-        UpdoxClient.connection.request(endpoint: PING_FULL_ENDPOINT, auth: self, required_auths: AUTH_FULL)
+        Model.request(endpoint: PING_FULL_ENDPOINT, auth: self, required_auths: AUTH_FULL)
       end
     end
   end

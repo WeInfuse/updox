@@ -73,7 +73,7 @@ class Minitest::Test
   end
 
   def stub_updox(endpoint: Updox::Models::Auth::PING_ENDPOINT, response: nil)
-    response ||= build_response(body: {})
+    response ||= build_response(body: load_sample('success.response.json'))
 
     @stub = stub_updox_request(endpoint).to_return(response)
   end

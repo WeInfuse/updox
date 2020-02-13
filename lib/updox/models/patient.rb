@@ -32,7 +32,7 @@ module Updox
       end
 
       def self.sync(patients, account_id: )
-        from_response(UpdoxClient.connection.request(endpoint: SYNC_ENDPOINT, body: { patients: patients }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT), self)
+        request(endpoint: SYNC_ENDPOINT, body: { patients: patients }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
     end
   end

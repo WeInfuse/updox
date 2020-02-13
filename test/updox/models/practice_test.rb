@@ -38,7 +38,7 @@ class PracticeTest < Minitest::Test
       end
 
       describe 'create' do
-        let(:response) { build_response() }
+        let(:response) { nil }
         let(:ep) { Updox::Models::Practice::CREATE_ENDPOINT }
 
         before do

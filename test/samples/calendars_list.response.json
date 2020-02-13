@@ -1,0 +1,31 @@
+{
+  "calendars": [
+    {
+      "id": 123,
+      "externalId": "C1",
+      "title": "My Calendar",
+      "pid": 11,
+      "color": "#40d3db",
+      "textColor": "#FFFFFF",
+      "publick": false,
+      "rules": "{\"mo\":{\"enabled\":false,\"hours\":[]},\"tu\":{\"enabled\":false,\"hours\":[]},\"we\":{\"enabled\":false,\"hours\":[]},\"th\":{\"enabled\":false,\"hours\":[]},\"fr\":{\"enabled\":false,\"hours\":[]},\"sa\":{\"enabled\":false,\"hours\":[]},\"su\":{\"enabled\":false,\"hours\":[]}}",
+      "active": true,
+      "reminderTurnOff": false,
+      "blackouts": null,
+      "idString": "a888",
+      "argsForUniqueRecordSearch": [
+        11,
+        "C1"
+      ],
+      "sqlForUniqueRecordSearch": "pid = ? AND external_id = ?",
+      "classType": "com.updox.objects.MemberSchedule",
+      "logSelfDescription": "syncable type(class com.updox.objects.MemberSchedule), pid(11), external_id(C1)",
+      "externalUniqueIdentifiers": {
+        "external_id": "C1"
+      }
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}

@@ -31,15 +31,15 @@ module Updox
       alias_method :login_password, :loginPassword
 
       def create
-        UpdoxClient.connection.request(endpoint: SAVE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
+        self.class.request(endpoint: SAVE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
       end
 
       def self.find(user_id, account_id: )
-        from_response(UpdoxClient.connection.request(endpoint: FIND_ENDPOINT, account_id: account_id, body: { userId: user_id}, required_auths: Updox::Models::Auth::AUTH_ACCT))
+        request(endpoint: FIND_ENDPOINT, account_id: account_id, body: { userId: user_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
 
       def self.query
-        from_response(UpdoxClient.connection.request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP))
+        request(endpoint: QUERY_ENDPOINT, required_auths: Updox::Models::Auth::AUTH_APP)
       end
     end
   end

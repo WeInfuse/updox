@@ -138,11 +138,12 @@ class ConnectionTest < Minitest::Test
     end
 
     it 'returns response' do
+      success  = load_sample('success.response.json')
       response = connection.request
 
       assert(response.ok?)
-      assert_equal({}, response.parsed_response)
-      assert_equal('{}', response.body)
+      assert_equal(JSON.parse(success), response.parsed_response)
+      assert_equal(success, response.body)
     end
 
     it 'changes body to json for hashes' do
