@@ -2,6 +2,7 @@ module Updox
   module Models
     class Appointment < Model
       SYNC_ENDPOINT  = '/AppointmentsSync'.freeze
+      LIST_ENDPOINT  = '/AppointmentStatusesGetByIds'.freeze
 
       property :id, required: true
       property :updoxId, from: :updox_id
@@ -34,6 +35,20 @@ module Updox
 
       def save(account_id: )
         self.class.sync([self], account_id: account_id)
+      end
+
+      def self.exists?(appointment_id, account_id: , cached_query: nil)
+        false == self.find(appointment_id, account_id: account_id, cached_query: cached_query).nil?
+      end
+
+      def self.find(appointment_id, account_id: , cached_query: nil)
+        obj = cached_query || self.query([appointment_id], account_id: account_id)
+
+        obj.item['appointmentStatuses'].find {|appointment| appointment_id.to_s == appointment[:externalAppointmentId].to_s }
+      end
+
+      def self.query(appointment_ids, account_id: , active_only: false)
+        request(endpoint: LIST_ENDPOINT, body: { apopintmentIds: appointment_ids }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
 
       def self.sync(appointments, account_id: )

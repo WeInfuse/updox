@@ -1,0 +1,26 @@
+{
+  "appointmentStatuses": [
+    {
+      "appointmentId": 36616,
+      "externalAppointmentId": "123",
+      "appointmentStatus": "scheduled",
+      "reminders": [
+        {
+          "reminderId": 376319,
+          "reminderStatus": "sent",
+          "reminderStatusDate": "02/08/2020 18:00:55 CST",
+          "reminderType": "email"
+        },
+        {
+          "reminderId": 723467,
+          "reminderStatus": "sent",
+          "reminderStatusDate": "02/09/2020 18:00:32 CST",
+          "reminderType": "sms"
+        }
+      ]
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}

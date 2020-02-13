@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Calendar#find
 - Calendar#exists?
 - Patient#exists?
+- Appointment#query
+- Appointment#find
+- Appointment#exists?
 - Models now have `error_message` class that returns string with code and message
 
 ### Changed
