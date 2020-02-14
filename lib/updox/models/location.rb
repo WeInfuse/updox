@@ -4,8 +4,9 @@ module Updox
       SYNC_ENDPOINT  = '/LocationsSync'.freeze
       LIST_ENDPOINT  = '/PracticeLocationsRetrieve'.freeze
 
-      LIST_TYPE = 'locations'
+      LIST_TYPE = 'locations'.freeze
       LIST_NAME = LIST_TYPE
+      SYNC_LIST_TYPE = LIST_TYPE
 
       property :id
       property :code
@@ -49,10 +50,6 @@ module Updox
 
       def self.query(account_id: , active_only: false)
         request(endpoint: LIST_ENDPOINT, body: { activeOnly: active_only }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
-      end
-
-      def self.sync(locations, account_id: )
-        request(endpoint: SYNC_ENDPOINT, body: { locations: locations }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
     end
   end
