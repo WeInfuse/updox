@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - [UNRELEASED]
+### Added
+- AppointmentStatus
+- Reminder
+- Status
+- Can batch sync requests
+- Response with statuses is automatically converted into status objects
+
 ## [0.6.0] - 2020-02-13
 ### Added
 - Calendar#query
@@ -52,6 +60,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial Release with ability to ping Updox api
 
+[0.7.0]: https://github.com/WeInfuse/updox/compare/v0.6.0...HEAD
 [0.6.0]: https://github.com/WeInfuse/updox/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/WeInfuse/updox/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/WeInfuse/updox/compare/v0.3.0...v0.4.0

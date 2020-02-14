@@ -4,10 +4,12 @@ module Updox
   module Models
     class FakeModel < Model
       FAKE_ENDPOINT = '/CatsMeow'
+      SYNC_ENDPOINT = '/CatsSync'
 
       LIST_TYPE = 'catList'
       LIST_NAME = 'cats'
       ITEM_TYPE = 'cat'
+      SYNC_LIST_TYPE = LIST_NAME
 
       property :meows, required: false
 
@@ -51,6 +53,58 @@ class ModelTest < Minitest::Test
         assert_match(/404/, err.message)
       end
 
+      describe 'batching' do
+        let(:statuses_data) { (Updox::Models::RECOMMENDED_BATCH_SIZE + 1).times.map {|t| { id: t, success: true, message: 'blah blah' } } }
+        let(:request_data) { { successful: true, responseMesssage: 'OK', responseCode: 2000 } }
+        let(:effective_batch_size) { Updox::Models::RECOMMENDED_BATCH_SIZE }
+
+        before do
+          responses = []
+
+          statuses_data.each_slice(effective_batch_size) {|data| responses << build_response(body: request_data.merge(statuses: data).to_json) }
+
+          stub_updox(response: ->(request) { responses.shift }, endpoint: Updox::Models::FakeModel::SYNC_ENDPOINT)
+        end
+
+        describe 'batch size <= 0' do
+          let(:effective_batch_size) { 99999 }
+
+          it 'sends one request' do
+            fake.class.sync(statuses_data.size.times.to_a, account_id: '123', batch_size: 0)
+
+            assert_requested(@stub, times: 1)
+          end
+        end
+
+        describe 'batchs size > 0' do
+          let(:effective_batch_size) { 50 }
+
+          it 'batches things' do
+            fake.class.sync(statuses_data.size.times.to_a, account_id: '123', batch_size: effective_batch_size)
+
+            assert_requested(@stub, times: (statuses_data.size.to_f / effective_batch_size).ceil)
+          end
+        end
+
+        describe 'default batch' do
+          before do
+            @response = fake.class.sync(statuses_data.size.times.to_a, account_id: '123')
+          end
+
+          it 'batches things' do
+            assert_requested(@stub, times: 2)
+          end
+
+          it 'combines status responses' do
+            assert_equal(statuses_data.size, @response.items.size)
+          end
+
+          it 'adds statuses alias' do
+            assert_equal(@response.statuses.size, @response.items.size)
+          end
+        end
+      end
+
       describe 'conversions' do
         describe 'single item' do
           before do
@@ -68,6 +122,18 @@ class ModelTest < Minitest::Test
 
           it 'gives an alias to the ITEM_TYPE' do
             assert_equal(model.item, model.cat)
+          end
+        end
+
+        describe 'statuses' do
+          it 'converts into objects' do
+            data = load_sample('error.sync.response.json', parse: true)
+
+            stub_updox(response: build_response(body: data))
+
+            assert_equal(data.reject {|k,v| k == 'statuses' }, model.item)
+            assert_equal(2, model.items.size)
+            assert_kind_of(Updox::Models::Status, model.items.first)
           end
         end
 

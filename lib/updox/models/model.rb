@@ -1,8 +1,9 @@
 module Updox
   module Models
     DATETIME_FORMAT = '%Y-%m-%d %H:%M'.freeze
+    DATETIME_OTHER_FORMAT = '%m/%d/%Y %H:%M:%s %z'.freeze
 
-    #BATCH_SIZE = 200
+    RECOMMENDED_BATCH_SIZE = 200
 
     class Model < Hashie::Trash
       include Hashie::Extensions::IgnoreUndeclared
@@ -32,6 +33,29 @@ module Updox
         "#{response_code}: #{response_message}"
       end
 
+      def self.sync(items, account_id: , batch_size: RECOMMENDED_BATCH_SIZE, endpoint: self.const_get(:SYNC_ENDPOINT))
+        response  = nil
+        list_type = self.const_get(:SYNC_LIST_TYPE)
+
+        if 0 >= batch_size
+          response = request(endpoint: endpoint, body: { list_type => items }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+        else
+          items.each_slice(batch_size) do |batch|
+            r = request(endpoint: endpoint, body: { list_type => batch }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+
+            return r unless r.successful?
+
+            if response
+              response.items += r.items
+            else
+              response = r
+            end
+          end
+        end
+
+        return response
+      end
+
       def self.request(**kwargs)
         from_response(UpdoxClient.connection.request(kwargs))
       end
@@ -54,7 +78,18 @@ module Updox
             model.item = klazz.new(data.dig(klazz.const_get(:ITEM_TYPE)))
             model.define_singleton_method(klazz.const_get(:ITEM_TYPE)) { self.item }
           else
-            model.items = [data]
+            k = data&.keys&.find {|k| k.to_s.downcase.end_with?('statuses') }
+            c = 'Updox::Models::' + k[0..-3].capitalize if k
+
+            if k.nil? || false == Module.const_defined?(c)
+              model.items = [data]
+            else
+              statuses = data.delete(k)
+
+              model.items = statuses.map {|status| Object.const_get(c).new(status) }
+              model.define_singleton_method(:statuses) { self.items }
+            end
+
             model.item  = data
           end
 

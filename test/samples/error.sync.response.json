@@ -1,0 +1,17 @@
+{
+  "statuses": [
+    {
+      "id": "",
+      "success": false,
+      "message": "The appointment date is not valid: "
+    },
+    {
+      "id": "27",
+      "success": true,
+      "message": null
+    }
+  ],
+  "successful": true,
+  "responseMessage": "OK",
+  "responseCode": 2000
+}
