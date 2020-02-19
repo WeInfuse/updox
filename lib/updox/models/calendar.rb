@@ -26,10 +26,6 @@ module Updox
         self.class.request(endpoint: SYNC_ENDPOINT, body: self.to_h, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
 
-      def self.exists?(calendar_id, account_id: , cached_query: nil)
-        false == self.find(calendar_id, account_id: account_id, cached_query: cached_query).nil?
-      end
-
       def self.find(calendar_id, account_id: , cached_query: nil)
         obj = cached_query || self.query(account_id: account_id)
 

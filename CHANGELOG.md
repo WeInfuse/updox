@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.8.0] - [UNRELEASED]
 ### Added
+- Model#exists? for all models to share if `find` is implemented
+
+### Fixed
+- Rails uses `as_json` to serialize so date in appointment was incorrect string
 
 ## [0.7.0] - [2020-02-14]
 ### Added

@@ -38,10 +38,6 @@ module Updox
         self.class.sync([self], account_id: account_id)
       end
 
-      def self.exists?(location_id, account_id: , cached_query: nil)
-        false == self.find(location_id, account_id: account_id, cached_query: cached_query).nil?
-      end
-
       def self.find(location_id, account_id: , cached_query: nil)
         obj = cached_query || self.query(account_id: account_id)
 

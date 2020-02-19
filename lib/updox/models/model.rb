@@ -33,6 +33,11 @@ module Updox
         "#{response_code}: #{response_message}"
       end
 
+      def self.exists?(item_id, account_id: , cached_query: nil)
+        raise UpdoxException.new('Not implemented on this model.') unless self.respond_to?(:find)
+        false == self.find(item_id, account_id: account_id, cached_query: cached_query).nil?
+      end
+
       def self.sync(items, account_id: , batch_size: RECOMMENDED_BATCH_SIZE, endpoint: self.const_get(:SYNC_ENDPOINT))
         response  = nil
         list_type = self.const_get(:SYNC_LIST_TYPE)

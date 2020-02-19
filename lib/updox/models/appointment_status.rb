@@ -15,10 +15,6 @@ module Updox
       alias_method :external_appointment_id, :externalAppointmentId
       alias_method :appointment_status, :appointmentStatus
 
-      def self.exists?(appointment_id, account_id: , cached_query: nil)
-        false == self.find(appointment_id, account_id: account_id, cached_query: cached_query).nil?
-      end
-
       def self.find(appointment_id, account_id: , cached_query: nil)
         obj = cached_query || self.query([appointment_id], account_id: account_id)
 

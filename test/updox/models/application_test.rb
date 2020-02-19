@@ -36,7 +36,7 @@ class ApplicationTest < Minitest::Test
         end
 
         it 'can provide a sso url' do
-          assert_equal('http://updoxqa.com/sso/applicationOpen/123/abcdefabcdefabcdefabcdef1231231231231231', application.url(account_id: 'my_account_id', user_id: 'my_user_id'))
+          assert_equal('https://updoxqa.com/sso/applicationOpen/123/abcdefabcdefabcdefabcdef1231231231231231', application.url(account_id: 'my_account_id', user_id: 'my_user_id'))
         end
 
         it 'can provide a sso url with overridden base uri' do
