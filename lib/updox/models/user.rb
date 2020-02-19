@@ -30,8 +30,8 @@ module Updox
       alias_method :last_name, :lastName
       alias_method :login_password, :loginPassword
 
-      def create
-        self.class.request(endpoint: SAVE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
+      def create(account_id: )
+        self.class.request(endpoint: SAVE_ENDPOINT, body: self.to_h, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
       end
 
       def self.find(user_id, account_id: )
