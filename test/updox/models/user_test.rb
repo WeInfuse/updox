@@ -3,6 +3,7 @@ require 'test_helper'
 class UserTest < Minitest::Test
   describe 'user' do
     let(:user) { Updox::Models::User.new(first_name: 'Larry', last_name: 'Larryton') }
+    let(:aid) { 'my_account_id' }
 
     describe 'object' do
       describe '#first_name' do
@@ -41,15 +42,15 @@ class UserTest < Minitest::Test
         let(:ep) { Updox::Models::User::SAVE_ENDPOINT }
 
         before do
-          user.create
+          user.create(account_id: aid)
         end
 
         it 'calls create api' do
           assert_equal(request_body['firstName'], user.first_name)
         end
 
-        it 'has app auth' do
-          assert_app_auth()
+        it 'has account auth' do
+          assert_acct_auth(aid)
         end
       end
 
@@ -78,7 +79,7 @@ class UserTest < Minitest::Test
         let(:ep) { Updox::Models::User::FIND_ENDPOINT }
 
         before do
-          @response = user.class.find('my_user_id', account_id: 'my_account_id')
+          @response = user.class.find('my_user_id', account_id: aid)
         end
 
         it 'gets response' do
@@ -86,7 +87,13 @@ class UserTest < Minitest::Test
         end
 
         it 'has app auth' do
-          assert_acct_auth('my_account_id')
+          assert_acct_auth(aid)
+        end
+
+        describe '#exists?' do
+          it 'calls find' do
+            user.class.exists?('my_user_id', account_id: aid)
+          end
         end
       end
     end

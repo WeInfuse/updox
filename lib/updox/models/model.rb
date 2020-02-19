@@ -35,7 +35,12 @@ module Updox
 
       def self.exists?(item_id, account_id: , cached_query: nil)
         raise UpdoxException.new('Not implemented on this model.') unless self.respond_to?(:find)
-        false == self.find(item_id, account_id: account_id, cached_query: cached_query).nil?
+        opts = { account_id: account_id }
+        opts[:cached_query] = cached_query unless cached_query.nil?
+
+        response = self.find(item_id, **opts)
+
+        false == response.nil? && (false == response.class.const_defined?(:FIND_ENDPOINT) || response.successful?)
       end
 
       def self.sync(items, account_id: , batch_size: RECOMMENDED_BATCH_SIZE, endpoint: self.const_get(:SYNC_ENDPOINT))
