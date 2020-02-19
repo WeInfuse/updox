@@ -1,5 +1,5 @@
 {
-    "responseCode": 4000,
-    "responseMessage": "Bad Request",
-    "successful": false
+  "responseCode": 4000,
+  "responseMessage": "Bad Request",
+  "successful": false
 }

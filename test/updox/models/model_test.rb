@@ -26,6 +26,7 @@ class ModelTest < Minitest::Test
       let(:fake) { Updox::Models::FakeModel.new }
       let(:model) { fake.call! }
       let(:success) { load_sample('success.response.json', parse: true) }
+      let(:account_id) { '123' }
 
       it 'adds item' do
         stub_updox()
@@ -70,7 +71,7 @@ class ModelTest < Minitest::Test
           let(:effective_batch_size) { 99999 }
 
           it 'sends one request' do
-            fake.class.sync(statuses_data.size.times.to_a, account_id: '123', batch_size: 0)
+            fake.class.sync(statuses_data.size.times.to_a, account_id: account_id, batch_size: 0)
 
             assert_requested(@stub, times: 1)
           end
@@ -80,7 +81,7 @@ class ModelTest < Minitest::Test
           let(:effective_batch_size) { 50 }
 
           it 'batches things' do
-            fake.class.sync(statuses_data.size.times.to_a, account_id: '123', batch_size: effective_batch_size)
+            fake.class.sync(statuses_data.size.times.to_a, account_id: account_id, batch_size: effective_batch_size)
 
             assert_requested(@stub, times: (statuses_data.size.to_f / effective_batch_size).ceil)
           end
@@ -88,7 +89,7 @@ class ModelTest < Minitest::Test
 
         describe 'default batch' do
           before do
-            @response = fake.class.sync(statuses_data.size.times.to_a, account_id: '123')
+            @response = fake.class.sync(statuses_data.size.times.to_a, account_id: account_id)
           end
 
           it 'batches things' do
@@ -102,6 +103,13 @@ class ModelTest < Minitest::Test
           it 'adds statuses alias' do
             assert_equal(@response.statuses.size, @response.items.size)
           end
+        end
+      end
+
+      describe 'exists?' do
+        it 'raises if find method not implemented' do
+          err = assert_raises(Updox::UpdoxException) { fake.class.exists?(1, account_id: account_id) }
+          assert_match(/Not implemented on this model/, err.message)
         end
       end
 

@@ -33,6 +33,7 @@ module Updox
 
         result
       end
+      alias_method :as_json, :to_h
 
       def save(account_id: )
         self.class.sync([self], account_id: account_id)

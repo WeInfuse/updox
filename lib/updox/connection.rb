@@ -1,8 +1,11 @@
 module Updox
   class Connection
+    TEST_HOST = 'updoxqa.com'
+    PROD_HOST = 'xxxxxxx.com'
+
     include HTTParty
 
-    base_uri 'http://updoxqa.com/api/io/'.freeze
+    base_uri "https://#{TEST_HOST}/api/io/".freeze
 
     headers 'Content-Type' => 'application/json'
 
