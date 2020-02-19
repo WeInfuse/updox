@@ -40,7 +40,7 @@ module Updox
 
         response = self.find(item_id, **opts)
 
-        false == response.nil? && (false == response.class.const_defined?(:FIND_ENDPOINT) || response.successful?)
+        false == response.nil? && (false == self.const_defined?(:FIND_ENDPOINT) || response.successful?)
       end
 
       def self.sync(items, account_id: , batch_size: RECOMMENDED_BATCH_SIZE, endpoint: self.const_get(:SYNC_ENDPOINT))
