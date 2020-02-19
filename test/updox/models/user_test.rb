@@ -91,8 +91,16 @@ class UserTest < Minitest::Test
         end
 
         describe '#exists?' do
-          it 'calls find' do
-            user.class.exists?('my_user_id', account_id: aid)
+          it 'is true for valid' do
+            assert(user.class.exists?('my_user_id', account_id: aid))
+          end
+
+          describe 'missing' do
+            let(:body) { load_sample('error.response.json') }
+
+            it 'is false for missing' do
+              assert_equal(false, user.class.exists?('my_user_id', account_id: aid))
+            end
           end
         end
       end
