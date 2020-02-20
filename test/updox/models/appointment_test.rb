@@ -13,6 +13,10 @@ class AppointmentTest < Minitest::Test
 
           assert_equal(appointment.date.strftime(Updox::Models::DATETIME_FORMAT), result['date'])
         end
+
+        it 'has an as_json method' do
+          assert_equal(appointment.to_h, appointment.as_json(takes: 1, options: 2))
+        end
       end
     end
 
