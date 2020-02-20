@@ -21,14 +21,24 @@ module Updox
       property :city
       property :state
       property :postal
+      property :timeZone, from: :time_zone
+      property :metadata
+      property :vetted
+      property :active, default: true
+      property :searchOptOut, from: :search_opt_out, default: true
+      property :npi
+      property :providerTaxonomyCode, from: :provider_taxonomy_code
+      property :directAddress, from: :direct_address
       property :provider, default: false
       property :admin, default: false
-      property :searchOptOut, from: :search_opt_out, default: true
 
       alias_method :user_id, :userId
       alias_method :first_name, :firstName
       alias_method :last_name, :lastName
       alias_method :login_password, :loginPassword
+      alias_method :time_zone, :timeZone
+      alias_method :provider_taxonomy_code, :providerTaxonomyCode
+      alias_method :direct_address, :directAddress
 
       def create(account_id: )
         self.class.request(endpoint: SAVE_ENDPOINT, body: self.to_h, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
