@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [0.12.0] - [UNRELEASED]
+## [0.12.0] - [2020-02-21]
+### Added
+- Configuration to `raise` on non-success response
+- Configuration to call a lambda on non-success response
+
 ### Fixed
 - Bug with `as_json` method
 - Bug when no date returns on statuses

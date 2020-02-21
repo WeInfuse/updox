@@ -19,6 +19,7 @@ require 'updox/models/user'
 module Updox
   class Configuration
     attr_accessor :application_id, :application_password, :parse_responses
+    attr_reader :failure_action
 
     alias_method :parse_responses?, :parse_responses
 
@@ -26,6 +27,12 @@ module Updox
       @application_id       = nil
       @application_password = nil
       @parse_responses      = true
+      @failure_action       = nil
+    end
+
+    def failure_action=(value)
+      raise "Failure action must be 'nil', ':raise' or callable object!" unless value.nil? || value.respond_to?(:call) || :raise == value
+      @failure_action = value
     end
 
     def api_endpoint=(endpoint)
@@ -41,7 +48,8 @@ module Updox
         application_id: @application_id,
         application_password: @application_password,
         api_endpoint: api_endpoint,
-        parse_responses: @parse_responses
+        parse_responses: @parse_responses,
+        failure_action: @failure_action
       }
     end
 
@@ -50,6 +58,7 @@ module Updox
       self.application_password  = h[:application_password]
       self.api_endpoint = h[:api_endpoint]
       self.parse_responses = h[:parse_responses]
+      self.failure_action = h[:failure_action]
 
       return self
     end

@@ -1,26 +1,29 @@
 module Updox
   class UpdoxException < Exception
     def self.from_response(response, msg: nil)
+      data = {}
       exception_msg = "Failed #{msg}:"
-      exception_msg << " HTTP code: #{response.code}"
+      data['HTTP_CODE'] = response.code
 
       begin
         error_response = JSON.parse(response.body)
 
         if error_response.is_a?(Hash)
           if error_response.include?('responseMessage')
-            exception_msg << " MSG: #{error_response['responseMessage']}"
+            data['MSG'] = error_response['responseMessage']
           end
 
           if error_response.include?('responseCode')
-            exception_msg << " UPDOX CODE: #{error_response['responseCode']}"
+            data['UPDOX_CODE'] = error_response['responseCode']
           end
         else
-          exception_msg << " MSG: #{error_response}"
+          data['MSG'] = error_response
         end
       rescue JSON::ParserError
-        exception_msg << " MSG: #{response.body}"
+        data['MSG'] = response.body
       end
+
+      data.each {|k,v| exception_msg << " #{k} '#{v}'" }
 
       return UpdoxException.new(exception_msg)
     end

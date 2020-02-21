@@ -161,6 +161,7 @@ Updox.configure do |c|
   c.application_password = ENV['UPDOX_APP_PASS']
   c.api_endpoint = 'http://hello.com' # Defaults to Updox endpoint
   c.parse_responses = false # Defaults to true
+  c.failure_response = :raise # Defaults to do nothing and allows lambdas
 end
 ```
 
