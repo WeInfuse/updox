@@ -103,7 +103,17 @@ module Updox
             model.item  = data
           end
 
-          model.updox_status = data&.select {|k,v| ['successful', 'responseMessage', 'responseCode'].include?(k)} || {}
+          if (data.is_a?(Hash))
+            model.updox_status = data&.select {|k,v| ['successful', 'responseMessage', 'responseCode'].include?(k)} || {}
+
+            if false == model.successful? && false == Updox.configuration.failure_action.nil?
+              if Updox.configuration.failure_action.respond_to?(:call)
+                Updox.configuration.failure_action.call(model)
+              elsif :raise == Updox.configuration.failure_action
+                raise UpdoxException.from_response(response, msg: 'request')
+              end
+            end
+          end
         else
           raise UpdoxException.from_response(response)
         end

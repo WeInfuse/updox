@@ -29,11 +29,34 @@ class UpdoxTest < Minitest::Test
       Updox.configuration.from_h(@config)
     end
 
+    describe 'failure_action' do
+      it 'allows :raise' do
+        Updox.configuration.failure_action = :raise
+      end
+
+      it 'allows lambda' do
+        Updox.configuration.failure_action = ->(x) { 10 }
+      end
+
+      it 'allows nil' do
+        Updox.configuration.failure_action = nil
+      end
+
+      it 'disallows anything else' do
+        err = assert_raises { Updox.configuration.failure_action = {h: 10} }
+        assert_match(/Failure action must be 'nil', ':raise' or callable object!/, err.message)
+
+        err = assert_raises { Updox.configuration.failure_action = :cat }
+        assert_match(/Failure action must be 'nil', ':raise' or callable object!/, err.message)
+      end
+    end
+
     {
       application_id: 'a',
       application_password: 'b',
       api_endpoint: 'http://hi.com',
-      parse_responses: false
+      parse_responses: false,
+      failure_action: :raise
     }.each do |method, value|
       it "can set #{method} via configuration" do
         assert(Updox.configuration.respond_to?(method))

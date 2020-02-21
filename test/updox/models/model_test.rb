@@ -25,13 +25,14 @@ class ModelTest < Minitest::Test
     describe '#from_response' do
       let(:fake) { Updox::Models::FakeModel.new }
       let(:model) { fake.call! }
-      let(:success) { load_sample('success.response.json', parse: true) }
+      let(:success_response) { load_sample('success.response.json', parse: true) }
+      let(:failure_response) { build_response(body: { responseCode: 3888, successful: false, responseMessage: 'Bad Model'}.to_json) }
       let(:account_id) { '123' }
 
       it 'adds item' do
         stub_updox()
-        assert_equal(success, model.item)
-        assert_equal(success, model.items.first)
+        assert_equal(success_response, model.item)
+        assert_equal(success_response, model.items.first)
       end
 
       it 'adds items' do
@@ -41,7 +42,7 @@ class ModelTest < Minitest::Test
       end
 
       it 'adds updox status info' do
-        stub_updox(response: build_response(body: { responseCode: 3888, successful: false, responseMessage: 'Bad Model'}.to_json))
+        stub_updox(response: failure_response)
         assert_equal(false, model.successful?)
         assert_equal(3888, model.response_code)
         assert_equal('Bad Model', model.response_message)
@@ -164,6 +165,54 @@ class ModelTest < Minitest::Test
 
           it 'gives an alias to the LIST_TYPE' do
             assert_equal(model.items, model.cats)
+          end
+        end
+      end
+
+      describe '#failure_action' do
+        before do
+          @config = Updox.configuration.to_h
+        end
+
+        after do
+          Updox.configuration.from_h(@config)
+        end
+
+        describe 'raise' do
+          before do
+            Updox.configuration.failure_action = :raise
+          end
+
+          it 'raises on failure' do
+            stub_updox(response: failure_response)
+            err = assert_raises(Updox::UpdoxException) { fake.call! }
+            assert_equal("Failed request: HTTP_CODE '200' MSG 'Bad Model' UPDOX_CODE '3888'", err.message)
+          end
+
+          it 'performs normally otherwise' do
+            stub_updox()
+            assert_equal(success_response, model.item)
+            assert_equal(success_response, model.items.first)
+          end
+        end
+
+        describe 'labmda' do
+          before do
+            @something = :dog
+            Updox.configuration.failure_action = ->(v) { @something = "Passed the #{v}" }
+          end
+
+          it 'calls the lambda' do
+            stub_updox(response: failure_response)
+
+            assert_equal("Passed the #{model}", @something)
+          end
+
+          it 'performs normally otherwise' do
+            stub_updox()
+            assert_equal(success_response, model.item)
+            assert_equal(success_response, model.items.first)
+            assert_equal(:dog, @something)
           end
         end
       end
