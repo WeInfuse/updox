@@ -1,32 +1,27 @@
 require 'test_helper'
 
-module Updox
-  module Models
-    class FakeModel < Model
-      extend Updox::Models::Extensions::Exists
-      extend Updox::Models::Extensions::Sync
+class ModelTest < Minitest::Test
+  class FakeModel < Updox::Models::Model
+    extend Updox::Models::Extensions::Sync
 
-      FAKE_ENDPOINT = '/CatsMeow'
-      SYNC_ENDPOINT = '/CatsSync'
+    FAKE_ENDPOINT = '/CatsMeow'
+    SYNC_ENDPOINT = '/CatsSync'
 
-      LIST_TYPE = 'catList'
-      LIST_NAME = 'cats'
-      ITEM_TYPE = 'cat'
-      SYNC_LIST_TYPE = LIST_NAME
+    LIST_TYPE = 'catList'
+    LIST_NAME = 'cats'
+    ITEM_TYPE = 'cat'
+    SYNC_LIST_TYPE = LIST_NAME
 
-      property :meows, required: false
+    property :meows, required: false
 
-      def call!
-        self.class.request
-      end
+    def call!
+      self.class.request
     end
   end
-end
 
-class ModelTest < Minitest::Test
   describe 'model' do
     describe '#from_response' do
-      let(:fake) { Updox::Models::FakeModel.new }
+      let(:fake) { FakeModel.new }
       let(:model) { fake.call! }
       let(:success_response) { load_sample('success.response.json', parse: true) }
       let(:failure_response) { build_response(body: { responseCode: 3888, successful: false, responseMessage: 'Bad Model'}.to_json) }
@@ -68,7 +63,7 @@ class ModelTest < Minitest::Test
 
           statuses_data.each_slice(effective_batch_size) {|data| responses << build_response(body: request_data.merge(statuses: data).to_json) }
 
-          stub_updox(response: ->(request) { responses.shift }, endpoint: Updox::Models::FakeModel::SYNC_ENDPOINT)
+          stub_updox(response: ->(request) { responses.shift }, endpoint: FakeModel::SYNC_ENDPOINT)
         end
 
         describe 'batch size <= 0' do
@@ -110,13 +105,6 @@ class ModelTest < Minitest::Test
         end
       end
 
-      describe 'exists?' do
-        it 'raises if find method not implemented' do
-          err = assert_raises(Updox::UpdoxException) { fake.class.exists?(1, account_id: account_id) }
-          assert_match(/Not implemented on this model/, err.message)
-        end
-      end
-
       describe 'conversions' do
         describe 'single item' do
           before do
@@ -128,7 +116,7 @@ class ModelTest < Minitest::Test
           end
 
           it 'creates and item of type' do
-            assert(model.item.is_a?(Updox::Models::FakeModel))
+            assert(model.item.is_a?(FakeModel))
             assert_equal(10, model.item.meows)
           end
 
@@ -163,7 +151,7 @@ class ModelTest < Minitest::Test
           end
 
           it 'has items of the type in the array' do
-            assert(model.items.all? {|item| item.is_a?(Updox::Models::FakeModel) })
+            assert(model.items.all? {|item| item.is_a?(FakeModel) })
           end
 
           it 'gives an alias to the LIST_TYPE' do

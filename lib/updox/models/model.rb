@@ -53,15 +53,15 @@ module Updox
             model.item = klazz.new(data.dig(klazz.const_get(:ITEM_TYPE)))
             model.define_singleton_method(klazz.const_get(:ITEM_TYPE)) { self.item }
           else
-            k = data&.keys&.find {|k| k.to_s.downcase.end_with?('statuses') }
-            c = 'Updox::Models::' + k[0..-3].capitalize if k
+            status_key   = data&.keys&.find {|k| k.to_s.downcase.end_with?('statuses') }
+            status_class = 'Updox::Models::' + status_key[0..-3].capitalize if status_key
 
-            if k.nil? || false == Module.const_defined?(c)
+            if status_key.nil? || false == Module.const_defined?(status_class)
               model.items = [data]
             else
-              statuses = data.delete(k)
+              statuses = data.delete(status_key)
 
-              model.items = statuses.map {|status| Object.const_get(c).new(status) }
+              model.items = statuses.map {|status| Object.const_get(status_class).new(status) }
               model.define_singleton_method(:statuses) { self.items }
             end
 

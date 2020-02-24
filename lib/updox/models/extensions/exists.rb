@@ -9,7 +9,7 @@ module Updox
 
           response = self.find(item_id, **opts)
 
-          false == response.nil? && (false == self.const_defined?(:FIND_ENDPOINT) || response.successful?)
+          false == response.nil?
         end
       end
     end

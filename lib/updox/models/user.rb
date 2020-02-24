@@ -47,7 +47,13 @@ module Updox
       end
 
       def self.find(user_id, account_id: )
-        request(endpoint: FIND_ENDPOINT, account_id: account_id, body: { userId: user_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+        response = request(endpoint: FIND_ENDPOINT, account_id: account_id, body: { userId: user_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
+
+        if response.successful?
+          response
+        else
+          nil
+        end
       end
 
       def self.query
