@@ -3,7 +3,7 @@ module Updox
     class Reminder < Model
       property :reminderId
       property :reminderStatus
-      property :reminderStatusDate, transform_with: ->(v) { DateTime.strptime(v, DATETIME_OTHER_FORMAT) unless v.nil? || v.empty? }
+      property :reminderStatusDate, transform_with: ->(v) { DateTime.strptime(v, DATETIME_TZ_FORMAT) unless v.nil? || v.empty? }
       property :reminderType
 
       alias_method :reminder_id, :reminderId

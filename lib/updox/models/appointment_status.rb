@@ -1,6 +1,8 @@
 module Updox
   module Models
     class AppointmentStatus < Model
+      extend Updox::Models::Extensions::Exists
+
       LIST_ENDPOINT  = '/AppointmentStatusesGetByIds'.freeze
 
       LIST_TYPE = 'appointmentStatuses'

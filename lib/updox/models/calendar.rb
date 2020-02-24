@@ -1,6 +1,8 @@
 module Updox
   module Models
     class Calendar < Model
+      extend Updox::Models::Extensions::Exists
+
       SYNC_ENDPOINT = '/CalendarsSync'.freeze
       LIST_ENDPOINT  = '/PracticeCalendarsRetrieve'.freeze
 

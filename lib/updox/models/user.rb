@@ -1,6 +1,8 @@
 module Updox
   module Models
     class User < Model
+      extend Updox::Models::Extensions::Exists
+
       SAVE_ENDPOINT  = '/UserSave'.freeze
       QUERY_ENDPOINT = '/UserList'.freeze
       FIND_ENDPOINT  = '/UserGet'.freeze
