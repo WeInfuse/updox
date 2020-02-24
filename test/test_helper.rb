@@ -8,6 +8,21 @@ require 'byebug'
 Updox.configuration.application_id = '123'
 Updox.configuration.application_password  = 'abc'
 
+class FakeResponse
+  attr_accessor :body, :ok
+
+  alias_method :ok?, :ok
+
+  def initialize(body: {}.to_json, ok: true)
+    @body = body
+    @ok   = ok
+  end
+
+  def parsed_response
+    return JSON.parse(body)
+  end
+end
+
 class Minitest::Test
   def request_body(request = @request)
     JSON.parse(request.body)
