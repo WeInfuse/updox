@@ -3,6 +3,9 @@ require 'test_helper'
 module Updox
   module Models
     class FakeModel < Model
+      extend Updox::Models::Extensions::Exists
+      extend Updox::Models::Extensions::Sync
+
       FAKE_ENDPOINT = '/CatsMeow'
       SYNC_ENDPOINT = '/CatsSync'
 
@@ -56,9 +59,9 @@ class ModelTest < Minitest::Test
       end
 
       describe 'batching' do
-        let(:statuses_data) { (Updox::Models::RECOMMENDED_BATCH_SIZE + 1).times.map {|t| { id: t, success: true, message: 'blah blah' } } }
+        let(:statuses_data) { (Updox::Models::Extensions::Sync::RECOMMENDED_BATCH_SIZE + 1).times.map {|t| { id: t, success: true, message: 'blah blah' } } }
         let(:request_data) { { successful: true, responseMesssage: 'OK', responseCode: 2000 } }
-        let(:effective_batch_size) { Updox::Models::RECOMMENDED_BATCH_SIZE }
+        let(:effective_batch_size) { Updox::Models::Extensions::Sync::RECOMMENDED_BATCH_SIZE }
 
         before do
           responses = []

@@ -1,6 +1,9 @@
 module Updox
   module Models
     class Location < Model
+      extend Updox::Models::Extensions::Exists
+      extend Updox::Models::Extensions::Sync
+
       SYNC_ENDPOINT  = '/LocationsSync'.freeze
       LIST_ENDPOINT  = '/PracticeLocationsRetrieve'.freeze
 

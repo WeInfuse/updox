@@ -1,9 +1,7 @@
 module Updox
   module Models
     DATETIME_FORMAT = '%Y-%m-%d %H:%M'.freeze
-    DATETIME_OTHER_FORMAT = '%m/%d/%Y %H:%M:%s %z'.freeze
-
-    RECOMMENDED_BATCH_SIZE = 200
+    DATETIME_TZ_FORMAT = '%m/%d/%Y %H:%M:%s %z'.freeze
 
     class Model < Hashie::Trash
       include Hashie::Extensions::IgnoreUndeclared
@@ -31,39 +29,6 @@ module Updox
 
       def error_message
         "#{response_code}: #{response_message}"
-      end
-
-      def self.exists?(item_id, account_id: , cached_query: nil)
-        raise UpdoxException.new('Not implemented on this model.') unless self.respond_to?(:find)
-        opts = { account_id: account_id }
-        opts[:cached_query] = cached_query unless cached_query.nil?
-
-        response = self.find(item_id, **opts)
-
-        false == response.nil? && (false == self.const_defined?(:FIND_ENDPOINT) || response.successful?)
-      end
-
-      def self.sync(items, account_id: , batch_size: RECOMMENDED_BATCH_SIZE, endpoint: self.const_get(:SYNC_ENDPOINT))
-        response  = nil
-        list_type = self.const_get(:SYNC_LIST_TYPE)
-
-        if 0 >= batch_size
-          response = request(endpoint: endpoint, body: { list_type => items }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
-        else
-          items.each_slice(batch_size) do |batch|
-            r = request(endpoint: endpoint, body: { list_type => batch }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT)
-
-            return r unless r.successful?
-
-            if response
-              response.items += r.items
-            else
-              response = r
-            end
-          end
-        end
-
-        return response
       end
 
       def self.request(**kwargs)

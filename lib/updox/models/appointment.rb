@@ -1,6 +1,8 @@
 module Updox
   module Models
     class Appointment < Model
+      extend Updox::Models::Extensions::Sync
+
       SYNC_ENDPOINT  = '/AppointmentsSync'.freeze
 
       SYNC_LIST_TYPE = 'appointments'.freeze

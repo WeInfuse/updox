@@ -1,6 +1,8 @@
 module Updox
   module Models
     class Patient < Model
+      extend Updox::Models::Extensions::Sync
+
       SYNC_ENDPOINT  = '/PatientsSync'.freeze
       SYNC_LIST_TYPE = 'patients'.freeze
 
