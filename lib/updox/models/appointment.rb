@@ -14,8 +14,8 @@ module Updox
       property :typeId, from: :type_id
       property :summary
       property :details
-      property :blocked, required: true, transform_with: ->(v) { true == v }, default: false
-      property :cancelled, required: true, transform_with: ->(v) { true == v }, default: false
+      property :blocked, required: true, default: false
+      property :cancelled, required: true, from: :canceled, default: false
       property :locationId, from: :location_id
       property :reminderTokens, from: :reminder_tokens
 
@@ -25,6 +25,7 @@ module Updox
       alias_method :type_id, :typeId
       alias_method :location_id, :locationId
       alias_method :reminder_tokens, :reminderTokens
+      alias_method :canceled, :cancelled
 
       def to_h
         result = super.to_h

@@ -146,9 +146,9 @@ response.practices # Has the practices as Updox::Models::Practice model
 response.items # Same as practices, always exists on any model if alias is broken
 response.item  # If there is no array, we populate this object
 
-resposne.successful? # Indicates Updox successful indication
-resposne.response_code? # Indicates Updox response code
-resposne.response_message? # Indicates Updox response message
+response.successful? # Indicates Updox successful indication
+response.response_code? # Indicates Updox response code
+response.response_message? # Indicates Updox response message
 
 response.response # Raw HTTParty response is here
 ```
@@ -161,7 +161,7 @@ Updox.configure do |c|
   c.application_password = ENV['UPDOX_APP_PASS']
   c.api_endpoint = 'http://hello.com' # Defaults to Updox endpoint
   c.parse_responses = false # Defaults to true
-  c.failure_response = :raise # Defaults to do nothing and allows lambdas
+  c.failure_action = :raise # Defaults to do nothing and allows lambdas
 end
 ```
 
