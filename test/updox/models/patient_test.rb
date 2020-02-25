@@ -48,6 +48,15 @@ class PatientTest < Minitest::Test
           assert_acct_auth(account_id)
         end
       end
+
+      describe '#exists?' do
+        let(:response) { nil }
+        let(:ep) { Updox::Models::PatientMessage::LIST_ENDPOINT }
+
+        it 'calls patient message' do
+          assert(patient.class.exists?(1, account_id: account_id))
+        end
+      end
     end
   end
 end
