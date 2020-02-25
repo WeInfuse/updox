@@ -35,7 +35,7 @@ module Updox
       end
 
       def self.exists?(patient_id, account_id: )
-        request(endpoint: MESSAGE_COUNT_ENDPOINT, body: { patientId: patient_id }, auth: {accountId: account_id}, required_auths: Updox::Models::Auth::AUTH_ACCT).successful?
+        Updox::Models::PatientMessage.exists?(patient_id, account_id: account_id)
       end
     end
   end
