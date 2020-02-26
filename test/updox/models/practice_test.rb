@@ -87,6 +87,10 @@ class PracticeTest < Minitest::Test
           assert_equal(@response.item.name, @response.practice.name)
         end
 
+        it '#exists?' do
+          assert(practice.class.exists?(account_id))
+        end
+
         it 'has app auth' do
           assert_app_auth()
         end
