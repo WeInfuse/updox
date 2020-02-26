@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - [UNRELEASED]
+## [1.0.0] - [2020-02-25]
 ### Added
 - Aliases canceled to cancelled
 - Patient#exists?
@@ -98,7 +98,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Initial Release with ability to ping Updox api
 
-[1.0.0]: https://github.com/WeInfuse/updox/compare/v0.12.0...HEAD
+[1.0.0]: https://github.com/WeInfuse/updox/compare/v0.12.0...v1.0.0
 [0.12.0]: https://github.com/WeInfuse/updox/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/WeInfuse/updox/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/WeInfuse/updox/compare/v0.9.0...v0.10.0
