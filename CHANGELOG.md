@@ -7,8 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.0.0] - [UNRELEASED]
 ### Added
 - Aliases canceled to cancelled
+- Patient#exists?
 
 ### Fixed
+- `failure_action = :raise` works better
 - README fix for `failure_action` method
 
 ## [0.12.0] - [2020-02-21]

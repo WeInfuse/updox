@@ -7,14 +7,9 @@ module Updox
           opts = { account_id: account_id }
           opts[:cached_query] = cached_query unless cached_query.nil?
 
-          begin
-            response = self.find(item_id, **opts)
+          response = self.find(item_id, **opts)
 
-            false == response.nil?
-          rescue Updox::UpdoxException => e
-            raise e unless :raise == Updox.configuration.failure_action && e.message.include?('does not exist')
-            false
-          end
+          false == response.nil?
         end
       end
     end
