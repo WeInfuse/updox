@@ -159,7 +159,7 @@ response.response # Raw HTTParty response is here
 Updox.configure do |c|
   c.application_id       = ENV['UPDOX_APP_ID']
   c.application_password = ENV['UPDOX_APP_PASS']
-  c.api_endpoint = 'http://hello.com' # Defaults to Updox endpoint
+  c.api_endpoint = Updox::Connection::PROD_ENDPOINT # Defaults to Updox QA endpoint
   c.parse_responses = false # Defaults to true
   c.failure_action = :raise # Defaults to do nothing and allows lambdas
 end

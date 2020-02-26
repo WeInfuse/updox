@@ -1,8 +1,6 @@
 module Updox
   module Models
     class Practice < Model
-      extend Updox::Models::Extensions::Exists
-
       CREATE_ENDPOINT = '/PracticeCreate'.freeze
       FIND_ENDPOINT   = '/PracticeGet'.freeze
       QUERY_ENDPOINT  = '/PracticeList'.freeze
@@ -39,6 +37,10 @@ module Updox
 
       def create
         self.class.request(endpoint: CREATE_ENDPOINT, body: self.to_h, required_auths: Updox::Models::Auth::AUTH_APP)
+      end
+
+      def self.exists?(account_id)
+        false == self.find(account_id).nil?
       end
 
       def self.find(account_id)
