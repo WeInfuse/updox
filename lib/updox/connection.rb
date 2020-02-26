@@ -1,11 +1,13 @@
 module Updox
   class Connection
-    TEST_HOST = 'updoxqa.com'
-    PROD_HOST = 'xxxxxxx.com'
+    URI_BUILDER = ->(host) { "https://#{host}/api/io/".freeze }
+
+    QA_ENDPOINT   = URI_BUILDER.call('updoxqa.com')
+    PROD_ENDPOINT = URI_BUILDER.call('myupdox.com')
 
     include HTTParty
 
-    base_uri "https://#{TEST_HOST}/api/io/".freeze
+    base_uri QA_ENDPOINT
 
     headers 'Content-Type' => 'application/json'
 
