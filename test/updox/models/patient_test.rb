@@ -12,6 +12,27 @@ class PatientTest < Minitest::Test
 
           assert_equal(patient.internalId, result['internalId'])
         end
+
+        describe 'reminder preferences' do
+          it 'can be set' do
+            patient.reminderMethodId = Updox::Models::Patient::REMINDER_PREFERENCES[:off]
+            assert_equal(5, patient.reminderMethodId)
+          end
+
+          describe '#reminder_preference' do
+            it 'can lookup value' do
+              patient.reminder_preference = :email
+
+              assert_equal(1, patient.reminderMethodId)
+            end
+
+            it 'take a value' do
+              patient.reminder_preference = 99
+
+              assert_equal(99, patient.reminderMethodId)
+            end
+          end
+        end
       end
     end
 
