@@ -6,6 +6,15 @@ module Updox
       SYNC_ENDPOINT  = '/PatientsSync'.freeze
       SYNC_LIST_TYPE = 'patients'.freeze
 
+      REMINDER_PREFERENCES = {
+        practice: 0,
+        email: 1,
+        home_phone: 2,
+        mobile_phone: 3,
+        mobile_text: 4,
+        off: 5
+      }
+
       property :id
       property :internalId, required: true, from: :internal_id
       property :firstName, from: :first_name
@@ -17,6 +26,7 @@ module Updox
       property :workPhone, from: :work_phone
       property :mobileNumber, from: :mobile_number
       property :mobileNumber, from: :mobile_phone
+      property :reminderMethodId, from: :reminder_method_id
       property :active, default: true
 
       alias_method :email, :emailAddress
@@ -29,6 +39,17 @@ module Updox
       alias_method :work_phone, :workPhone
       alias_method :mobile_number, :mobileNumber
       alias_method :mobile_phone, :mobileNumber
+      alias_method :reminder_preference, :reminderMethodId
+
+      def reminder_preference=(value)
+        if Updox::Models::Patient::REMINDER_PREFERENCES.include?(value)
+          self[:reminderMethodId] = Updox::Models::Patient::REMINDER_PREFERENCES[value]
+        else
+          self[:reminderMethodId] = value
+        end
+
+        self
+      end
 
       def save(account_id: )
         self.class.sync([self], account_id: account_id)
