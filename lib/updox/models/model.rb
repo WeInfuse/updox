@@ -7,28 +7,37 @@ module Updox
       include Hashie::Extensions::IgnoreUndeclared
       include Hashie::Extensions::IndifferentAccess
 
+      attr_writer :updox_status
+
       LIST_TYPE = 'undefined'
       LIST_NAME = 'models'
       ITEM_TYPE = 'model'
 
       property :item, required: false
       property :items, required: false
-      property :updox_status, default: {}
 
       def successful?
-        self[:updox_status].dig('successful')
+        @updox_status['successful']
       end
 
       def response_code
-        self[:updox_status].dig('responseCode')
+        @updox_status['responseCode']
       end
 
       def response_message
-        self[:updox_status].dig('responseMessage')
+        @updox_status['responseMessage']
+      end
+
+      def updox_status
+        @updox_status ||= {}
       end
 
       def error_message
         "#{response_code}: #{response_message}"
+      end
+
+      def as_json(options = nil)
+        self.to_h
       end
 
       def self.request(**kwargs)

@@ -37,10 +37,6 @@ module Updox
         result
       end
 
-      def as_json(args)
-        self.to_h
-      end
-
       def save(account_id: )
         self.class.sync([self], account_id: account_id)
       end
