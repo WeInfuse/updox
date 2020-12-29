@@ -17,6 +17,10 @@ class AppointmentTest < Minitest::Test
         it 'has an as_json method' do
           assert_equal(appointment.to_h, appointment.as_json(takes: 1, options: 2))
         end
+
+        it 'does not include updox_status' do
+          assert_equal(false, appointment.as_json.include?('updox_status'))
+        end
       end
     end
 
